@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.0.5.RELEASE'
+        swaggerVersion = '2.7.0'
     }
     repositories {
         mavenCentral()
@@ -9,6 +10,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
+
 
 allprojects {
     apply plugin: 'idea'
@@ -33,6 +35,7 @@ project(':common') {
     eclipse {
         project {
             name = 'UrlShortener.common'
+            swaggerVersion = '2.7.0'
         }
     }
 
@@ -43,6 +46,13 @@ project(':common') {
     }
 
     dependencies {
+        // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+        compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+        // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+        compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+        // https://mvnrepository.com/artifact/com.github.joschi.jackson/jackson-datatype-threetenbp
+        compile group: 'com.github.joschi.jackson', name: 'jackson-datatype-threetenbp', version: '2.6.4'
+
         compile 'org.springframework.boot:spring-boot-starter-web'
         compile 'org.springframework.boot:spring-boot-starter-jdbc'
         compile 'org.springframework.hateoas:spring-hateoas'
