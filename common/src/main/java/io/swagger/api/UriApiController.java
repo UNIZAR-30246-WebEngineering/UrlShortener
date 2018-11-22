@@ -40,9 +40,12 @@ public class UriApiController implements UriApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
+    public ResponseEntity<ErrorItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        
+
+        return new ResponseEntity<ErrorItem>(HttpStatus.CREATED);
     }
 
     public ResponseEntity<URIItem> createURI(@ApiParam(value = "URI" ,required=true )  @Valid @RequestBody URICreate body) {

@@ -16,11 +16,11 @@ gradle-app.setting
 out/
 *.iml
 .DS_Store
-.project
+.project/
 .settings/org.eclipse.buildship.core.prefs
 common/src/main/java/io/swagger/api/CheckApiController.java
 team/.classpath
-team/.project
+team/.project/
 team/.settings/org.eclipse.buildship.core.prefs
 team/.settings/org.eclipse.jdt.core.prefs
 team/bin/main/urlshortener/team/Application.class
