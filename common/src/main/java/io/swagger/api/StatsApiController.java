@@ -36,7 +36,11 @@ public class StatsApiController implements StatsApi {
 
     public ResponseEntity<Stats> getStats() {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Stats>(HttpStatus.NOT_IMPLEMENTED);
+        Stats stats = new Stats();
+        stats.setRedirectedUris(745);
+        stats.setGeneratedQr(452);
+        stats.setServerLoad("23%");
+        return new ResponseEntity<Stats>(stats, HttpStatus.OK);
     }
 
 }
