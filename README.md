@@ -1,6 +1,8 @@
 # Web Engineering 2018-2019 / URL Shortener
 
-[![Build Status](https://travis-ci.org/UNIZAR-30246-WebEngineering/UrlShortener.svg?branch=master)](https://travis-ci.org/UNIZAR-30246-WebEngineering/UrlShortener)
+Master: [![Build Status](https://travis-ci.com/Blue-Bash/UrlShortener.svg?branch=master)](https://travis-ci.com/Blue-Bash/UrlShortener)
+
+Develop: [![Build Status](https://travis-ci.com/Blue-Bash/UrlShortener.svg?branch=develop)](https://travis-ci.com/Blue-Bash/UrlShortener)
 
 This is the shared repository for the project developed in this course. Go to the [wiki](../../wiki) to start your project.
 
