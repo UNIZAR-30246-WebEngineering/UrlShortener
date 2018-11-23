@@ -37,7 +37,7 @@ public interface UriApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name);
+    ResponseEntity<ErrorItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name);
 
 
     @ApiOperation(value = "Creates a new redirection", nickname = "createURI", notes = "Create a new URI redirection ", response = URIItem.class, tags={ "F0 - The app will short, storage and get URI&#39;s", })
@@ -64,6 +64,6 @@ public interface UriApi {
         @ApiResponse(code = 307, message = "Redirect to the real URI") })
     @RequestMapping(value = "/uri/{id}",
         method = RequestMethod.GET)
-    ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id);
+    ResponseEntity<URICreate> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id);
 
 }

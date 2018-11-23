@@ -39,7 +39,8 @@ public class CheckApiController implements CheckApi {
 
     public ResponseEntity<Void> checkURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }

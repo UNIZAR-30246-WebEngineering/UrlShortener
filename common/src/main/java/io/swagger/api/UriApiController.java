@@ -40,14 +40,24 @@ public class UriApiController implements UriApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
+    public ResponseEntity<ErrorItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ErrorItem error = new ErrorItem();
+        error.setErrorInfo("This is a test error");        
+
+        return new ResponseEntity<ErrorItem>(error, HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<URIItem> createURI(@ApiParam(value = "URI" ,required=true )  @Valid @RequestBody URICreate body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<URIItem>(HttpStatus.NOT_IMPLEMENTED);
+
+        URIItem uri = new URIItem();
+        uri.setId("");
+        uri.setRedirection("https://google.es");
+
+
+        return new ResponseEntity<URIItem>(uri, HttpStatus.TEMPORARY_REDIRECT);
     }
 
     public ResponseEntity<Void> deleteURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
@@ -55,9 +65,13 @@ public class UriApiController implements UriApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
+    public ResponseEntity<URICreate> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        URICreate uri = new URICreate();
+        uri.setUri("https://google.es");
+
+
+        return new ResponseEntity<URICreate>(uri, HttpStatus.TEMPORARY_REDIRECT);
     }
 
 }
