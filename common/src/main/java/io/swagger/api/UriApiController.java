@@ -32,13 +32,13 @@ public class UriApiController implements UriApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
+    public ResponseEntity<URIItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
         String accept = request.getHeader("Accept");
 
         ErrorItem error = new ErrorItem();
         error.setErrorInfo("This is a test error");        
 
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<URIItem>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<URIItem> createURI(@ApiParam(value = "URI" ,required=true )  @Valid @RequestBody URICreate body) {

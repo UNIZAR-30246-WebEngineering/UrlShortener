@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * QRItem
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
 
 public class QRItem   {
   @JsonProperty("uri")
@@ -31,7 +31,7 @@ public class QRItem   {
    * Get uri
    * @return uri
   **/
-  @ApiModelProperty(example = "https://google.es/", required = true, value = "")
+  @ApiModelProperty(example = "d290f1ee6c", required = true, value = "")
   @NotNull
 
 

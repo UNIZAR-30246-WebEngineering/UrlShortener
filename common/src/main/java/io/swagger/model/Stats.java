@@ -1,26 +1,26 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Stats
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
 
 public class Stats   {
   @JsonProperty("redirected-uris")
   private Integer redirectedUris = null;
 
   @JsonProperty("server-load")
-  private String serverLoad = null;
+  private BigDecimal serverLoad = null;
 
   @JsonProperty("generated-qr")
   private Integer generatedQr = null;
@@ -46,7 +46,7 @@ public class Stats   {
     this.redirectedUris = redirectedUris;
   }
 
-  public Stats serverLoad(String serverLoad) {
+  public Stats serverLoad(BigDecimal serverLoad) {
     this.serverLoad = serverLoad;
     return this;
   }
@@ -55,15 +55,16 @@ public class Stats   {
    * Get serverLoad
    * @return serverLoad
   **/
-  @ApiModelProperty(example = "Load of the server is 79%", required = true, value = "")
+  @ApiModelProperty(example = "0.79", required = true, value = "")
   @NotNull
 
+  @Valid
 
-  public String getServerLoad() {
+  public BigDecimal getServerLoad() {
     return serverLoad;
   }
 
-  public void setServerLoad(String serverLoad) {
+  public void setServerLoad(BigDecimal serverLoad) {
     this.serverLoad = serverLoad;
   }
 
