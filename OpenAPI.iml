@@ -1,0 +1,355 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+# Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/BlueBash/TinyURI/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Melic93/TinyURI/1.0.0
+info:
+  description: This is a URI Shorter API
+  version: "1.0.0"
+  title: TinyURI
+  contact:
+    email: email@unizar.es
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: F0
+    description: |  
+      The app will short, storage and get URI's
+        * When the user creates the URI with `POST /uri` the system will save the URI and its hash in the DB. 
+        * When the user requests `GET /uri/{id}` the system will redirect to the original URI stored in the DB whose hash is {id}
+        * When the user requests `DELETE /uri/{id}` the system will delete the original URI and its hash from the DB
+  - name: F1
+    description: | 
+      The app will return system stats and info. (WS)
+        * When the user creates the URI with `POST /uri` the system will update the stat of URI's created
+        * When the user requests `GET /stats`, the system will return the number of URI´s created, the number of URI´s alive when the request is made and the number of requests received.
+        * When the user requests `GET /stats/{id}` the system will return stats from the URI linked to the id. Those stats are the number of requests received to that URI, the time the last request was made and the date of creation.
+  
+  - name: F2
+    description: | 
+      The app will limit the number of redirections
+        * When the user requests `GET /uri/{id}` the system will check that the number of requests to that URI in the last minute is lower than a defined constant **MAX_REDIRECT**.
+  
+  - name: F3
+    description: | 
+      The app will let the user choose and update a name for the shorted URI
+        * When the user requests `POST /uri/{name}`the system will create a `{name}` associated and will store it in DB
+        * When the user requests `PUT /uri/{name}` the system will update the associated `{name}` of the URI 
+  - name: F4
+    description: |
+      The app will create a QR associated with that URI
+        * When the user requests `POST /uri` the system will create a QR code associated to that URI, will encode it in base64 and store it in DB
+        * When the user requests `GET /qr/{id}` the system will return the associated QR image stored in DB
+        * When the user requests `GET /qr/{id}` with any query parameter, the system will generate a new QR code for that id, personalised with the parameter specified in the query and will retrun it without storing it in the DB
+  
+  - name: F5
+    description: | 
+      The app will verify periodically that the shorthed URI is alive
+      * When the user creates the URI with `POST /uri` the user might request that this URI is alive
+      * When the user requests `GET /uri/{id}` if it's being checked and it isn't alive, it will return an error
+      * When the user or the system requests `GET /check/{id}` the system will return if the URI is alive
+      
+paths:
+  /uri:
+    post:
+      tags:
+        - F0
+        - F1
+        - F4
+        - F5
+      summary: Creates a new redirection
+      operationId: createURI
+      description: |
+        Create a new URI redirection
+      requestBody:
+        description: URI
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/URICreate'
+      responses:
+        '201':
+          description: The URI redirection has been successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URIItem'
+  /uri/{id}:
+    get:
+      tags:
+        - F0
+        - F2
+        - F5
+      summary: Returns the data of a redirection
+      operationId: getURI
+      description: |
+        Get a URI redirection
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '307':
+          description: Redirect to the real URI
+        '404':
+          description: The given URI couldn't be found
+    delete:
+      tags:
+        - F0
+      summary: Deletes an existing URI and its content.
+      operationId: deleteURI
+      description: |
+        Remove a URI redirection
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: hashpass
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Resource has been removed successfully
+        '404':
+          description: There is no URI with that hash
+  /stats:
+    get:
+      tags:
+        - F1
+      summary: Returns stats from server
+      operationId: getStats
+      description: |
+        Get stats info
+      responses:
+        '200':
+          description: Stats from server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+                
+  /stats/{id}:  
+    get:
+      tags:
+        - F1
+      summary: Returns stats from server
+      operationId: getStats
+      description: |
+        Get stats info
+      responses:
+        '200':
+          description: Stats from server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      
+  /uri/{name}:
+    post:
+      tags:
+        - F3
+      summary: Creates a name of a redirection
+      operationId: changeURI
+      description:
+        Assigns the name of a redirection
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/URICreate'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Name has been assigned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URIItem'
+        '400':
+          description: Error creating resource
+    put:
+      tags:
+        - F3
+      summary: Assigns the name of a redirection
+      operationId: changeURI
+      description:
+        Assigns the name of a redirection
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/URIUpdate'
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Name has been assigned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URIItem'
+        '400':
+          description: Error creating resource
+  /qr/{id}:
+    get:
+      tags:
+        - F4
+      summary: Obtains the QR and the URI associated to a shortened URI
+      operationId: getQR
+      description:
+        Obtains the QR and the URI associated to a shortened URI
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: width
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: height
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: QR and original URI
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QRItem'
+        '404':
+          description: the shortened URI doesn't exist
+  /check/{id}:
+    get:
+      tags:
+        - F5
+      summary: Checks the state of the original URI
+      operationId: checkURI
+      description:
+        Checks the state of the original URI
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The original URI is alive
+        '404':
+          description: The original URI is dead or the shortened URI doesn't exist
+          
+components:
+  schemas:
+    QRItem:
+      type: object
+      required:
+        - uri
+        - qr
+      properties:
+        uri:
+          type: string
+          format: hash
+          example: d290f1ee6c
+        qr:
+          type: string
+          format: base64
+    URIItem:
+      type: object
+      required:
+        - id
+        - redirection
+        - hashpass
+      properties:
+        id:
+          type: string
+          example: d290f1ee6c
+        redirection:
+          type: string
+          format: uri
+          example: https://google.es/
+        hashpass:
+          type: string
+          example: adsgv674fjhag
+          
+    URICreate:
+      type: object
+      required:
+        - uri
+      properties:
+        uri:
+          type: string
+          format: uri
+          example: https://google.es/
+    URIUpdate:
+      type: object
+      required:
+        - uri
+      properties:
+        new-name:
+          type: string
+          format: string
+          example: newname4
+        hashpass:
+          type: string
+          format: string
+          example: skljdhgks
+    Stats:
+      type: object
+      required:
+        - redirected-uris
+        - server-load
+        - generated-qr
+      properties:
+        redirected-uris:
+          type: integer
+          example: 3457
+        server-load:
+          type: number
+          example: 0.79
+        generated-qr:
+          type: integer
+          example: 1243
+    ErrorItem:
+      type: object
+      required:
+        - error-info
+      properties:
+        error-info:
+          type: string
+          example: "Error creating shorthed URI. Resource is already in use"
