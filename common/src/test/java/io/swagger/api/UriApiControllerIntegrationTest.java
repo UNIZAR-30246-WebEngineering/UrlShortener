@@ -25,7 +25,7 @@ public class UriApiControllerIntegrationTest {
     public void changeURITest() throws Exception {
         URICreate body = new URICreate();
         String name = "name_example";
-        ResponseEntity<Void> responseEntity = api.changeURI(body, name);
+        ResponseEntity<URIItem> responseEntity = api.changeURI(body, name);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 
