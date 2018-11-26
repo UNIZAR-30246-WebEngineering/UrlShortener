@@ -19,6 +19,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
@@ -40,12 +41,20 @@ public class StatsApiController implements StatsApi {
 
     public ResponseEntity<Stats> getStats() {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Stats>(HttpStatus.NOT_IMPLEMENTED);
+        Stats stats = new Stats();
+        stats.setRedirectedUris(745);
+        stats.setGeneratedQr(452);
+        stats.setServerLoad(new BigDecimal(0.23));
+        return new ResponseEntity<Stats>(stats, HttpStatus.OK);
     }
 
     public ResponseEntity<Stats> getStats(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Stats>(HttpStatus.NOT_IMPLEMENTED);
+        Stats stats = new Stats();
+        stats.setRedirectedUris(745);
+        stats.setGeneratedQr(452);
+        stats.setServerLoad(new BigDecimal(0.23));
+        return new ResponseEntity<Stats>(stats, HttpStatus.OK);
     }
 
 }
