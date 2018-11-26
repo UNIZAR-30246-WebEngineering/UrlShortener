@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import io.swagger.model.ErrorItem;
 import io.swagger.model.URICreate;
 import io.swagger.model.URIItem;
 import io.swagger.model.URIUpdate;
@@ -40,29 +41,46 @@ public class UriApiController implements UriApi {
         this.request = request;
     }
 
-    public ResponseEntity<URIItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URIUpdate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<URIItem>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<URIItem> changeURI(@Valid URIUpdate body, String name) {
+        return null;
     }
 
-    public ResponseEntity<URIItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
+    public ResponseEntity<URIItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body, @ApiParam(value = "",required=true) @PathVariable("name") String name) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<URIItem>(HttpStatus.NOT_IMPLEMENTED);
+
+        ErrorItem error = new ErrorItem();
+        error.setErrorInfo("This is a test error");        
+
+        return new ResponseEntity<URIItem>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<URIItem> createURI(@ApiParam(value = "URI" ,required=true )  @Valid @RequestBody URICreate body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<URIItem>(HttpStatus.NOT_IMPLEMENTED);
+
+        URIItem uri = new URIItem();
+        uri.setId("");
+        uri.setRedirection("https://google.es");
+
+
+        return new ResponseEntity<URIItem>(uri, HttpStatus.TEMPORARY_REDIRECT);
     }
 
-    public ResponseEntity<Void> deleteURI(@ApiParam(value = "",required=true) @PathVariable("id") String id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "hashpass", required = true) String hashpass) {
+    @Override
+    public ResponseEntity<Void> deleteURI(String id, @NotNull @Valid String hashpass) {
+        return null;
+    }
+
+    public ResponseEntity<Void> deleteURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+
+        return new ResponseEntity<Void>(HttpStatus.TEMPORARY_REDIRECT);
     }
 
 }
