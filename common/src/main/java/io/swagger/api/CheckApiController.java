@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
 @Controller
 public class CheckApiController implements CheckApi {
@@ -39,8 +39,7 @@ public class CheckApiController implements CheckApi {
 
     public ResponseEntity<Void> checkURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
-
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

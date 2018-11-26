@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
 @Controller
 public class QrApiController implements QrApi {
@@ -38,12 +38,9 @@ public class QrApiController implements QrApi {
         this.request = request;
     }
 
-    public ResponseEntity<QRItem> getQR(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
+    public ResponseEntity<QRItem> getQR(@ApiParam(value = "",required=true) @PathVariable("id") String id,@ApiParam(value = "") @Valid @RequestParam(value = "width", required = false) Integer width,@ApiParam(value = "") @Valid @RequestParam(value = "height", required = false) Integer height) {
         String accept = request.getHeader("Accept");
-        QRItem qr = new QRItem();
-        qr.setUri("https://www.google.es");
-        qr.setQr("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEX///8AAABVwtN+AAABwElEQVR4nO3bPZLCMAyGYTNbUHKEHGWPBkfLUThCSgoGrSVbxs6ys5SJeL+G/PihQkQ2JiVCYuRLutzt0rdckjzscJI5nfsRFwgkELl5HRwyOcpipL7ZNb+exQfUOxBIHHKyUjDiyfVSKknrJd8R8xBIYHK0w/ywkOYhkM8gKZ/MOrCcTG+VGASyDVLjH/6hzZ/f6JQgkJ2SLs+e39qe21tzZAhkp+RX6pOjZCpPjn8CgeySPOul9kMv5ri5eLSO3EMgMYjXRc6jntRRfn1Y9IdANkuO44d/WLTvslQPgUQh5ca11MFz9tt6/q5exgkvBLJ3kqyj0bO21GmjNDe7Xg/LXAACiUO0Xpa+Uzp5PzTUy3qaAIFEIFoVeiar3FsPZek7JQgkChlWN8vzYawXqR3UNwSybXLNRyKt7ekW7Wt8UIJAwpBV2s+1/s0/61VdB1peAwhkt+TFXoXko3yvQj5ZT3ghkAhk2KXWrfb4Fs1WLxMEEo6sdtrrKHmMlbSuFwhk+6TcsLRvfg8EEprY/mL/hbZGr//xzxQIZMek5tB6/nNZ6vQSsZfymy4EEol08b+ZdIv+mm4EBBKHEPKh+QEBLQhcYvmo3AAAAABJRU5ErkJggg==");
-        return new ResponseEntity<QRItem>(qr, HttpStatus.OK);
+        return new ResponseEntity<QRItem>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

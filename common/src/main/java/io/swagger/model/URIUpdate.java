@@ -10,34 +10,56 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ErrorItem
+ * URIUpdate
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
-public class ErrorItem   {
-  @JsonProperty("error-info")
-  private String errorInfo = null;
+public class URIUpdate   {
+  @JsonProperty("new-name")
+  private String newName = null;
 
-  public ErrorItem errorInfo(String errorInfo) {
-    this.errorInfo = errorInfo;
+  @JsonProperty("hashpass")
+  private String hashpass = null;
+
+  public URIUpdate newName(String newName) {
+    this.newName = newName;
     return this;
   }
 
   /**
-   * Get errorInfo
-   * @return errorInfo
+   * Get newName
+   * @return newName
   **/
-  @ApiModelProperty(example = "Error creating shorthed URI. Resource is already in use", required = true, value = "")
-  @NotNull
+  @ApiModelProperty(example = "newname4", value = "")
 
 
-  public String getErrorInfo() {
-    return errorInfo;
+  public String getNewName() {
+    return newName;
   }
 
-  public void setErrorInfo(String errorInfo) {
-    this.errorInfo = errorInfo;
+  public void setNewName(String newName) {
+    this.newName = newName;
+  }
+
+  public URIUpdate hashpass(String hashpass) {
+    this.hashpass = hashpass;
+    return this;
+  }
+
+  /**
+   * Get hashpass
+   * @return hashpass
+  **/
+  @ApiModelProperty(example = "skljdhgks", value = "")
+
+
+  public String getHashpass() {
+    return hashpass;
+  }
+
+  public void setHashpass(String hashpass) {
+    this.hashpass = hashpass;
   }
 
 
@@ -49,21 +71,23 @@ public class ErrorItem   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ErrorItem errorItem = (ErrorItem) o;
-    return Objects.equals(this.errorInfo, errorItem.errorInfo);
+    URIUpdate urIUpdate = (URIUpdate) o;
+    return Objects.equals(this.newName, urIUpdate.newName) &&
+        Objects.equals(this.hashpass, urIUpdate.hashpass);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(errorInfo);
+    return Objects.hash(newName, hashpass);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorItem {\n");
+    sb.append("class URIUpdate {\n");
     
-    sb.append("    errorInfo: ").append(toIndentedString(errorInfo)).append("\n");
+    sb.append("    newName: ").append(toIndentedString(newName)).append("\n");
+    sb.append("    hashpass: ").append(toIndentedString(hashpass)).append("\n");
     sb.append("}");
     return sb.toString();
   }

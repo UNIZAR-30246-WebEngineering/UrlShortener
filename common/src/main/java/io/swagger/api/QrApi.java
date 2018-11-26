@@ -22,18 +22,18 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
 @Api(value = "qr", description = "the qr API")
 public interface QrApi {
 
-    @ApiOperation(value = "Obtains the QR and the URI associated to a shortened URI", nickname = "getQR", notes = "Obtains the QR and the URI associated to a shortened URI", response = QRItem.class, tags={ "F4 - The app will generate a QR code for every shorthed URI", })
+    @ApiOperation(value = "Obtains the QR and the URI associated to a shortened URI", nickname = "getQR", notes = "Obtains the QR and the URI associated to a shortened URI", response = QRItem.class, tags={ "F4", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "QR and original URI", response = QRItem.class),
         @ApiResponse(code = 404, message = "the shortened URI doesn't exist") })
     @RequestMapping(value = "/qr/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<QRItem> getQR(@ApiParam(value = "",required=true) @PathVariable("id") String id);
+    ResponseEntity<QRItem> getQR(@ApiParam(value = "",required=true) @PathVariable("id") String id,@ApiParam(value = "") @Valid @RequestParam(value = "width", required = false) Integer width,@ApiParam(value = "") @Valid @RequestParam(value = "height", required = false) Integer height);
 
 }
