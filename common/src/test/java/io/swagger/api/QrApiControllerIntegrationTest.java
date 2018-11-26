@@ -26,7 +26,7 @@ public class QrApiControllerIntegrationTest {
     @Test
     public void getQRTest() throws Exception {
         String id = "id_example";
-        ResponseEntity<QRItem> responseEntity = api.getQR(id);
+        ResponseEntity<QRItem> responseEntity = api.getQR(id, 1, 1);
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 

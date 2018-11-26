@@ -22,17 +22,26 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
 @Api(value = "stats", description = "the stats API")
 public interface StatsApi {
 
-    @ApiOperation(value = "Returns stats from server", nickname = "getStats", notes = "Get stats info ", response = Stats.class, tags={ "F1 - The app will return system stats and info. (WS)", })
+    @ApiOperation(value = "Returns stats from server", nickname = "getStats", notes = "Get stats info ", response = Stats.class, tags={ "F1", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Stats from server", response = Stats.class) })
     @RequestMapping(value = "/stats",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<Stats> getStats();
+
+
+    @ApiOperation(value = "Returns stats from server", nickname = "getStats", notes = "Get stats info ", response = Stats.class, tags={ "F1", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Stats from server", response = Stats.class) })
+    @RequestMapping(value = "/stats/{id}",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<Stats> getStats(@ApiParam(value = "",required=true) @PathVariable("id") String id);
 
 }
