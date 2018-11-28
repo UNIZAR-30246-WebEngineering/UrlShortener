@@ -1,3 +1,11 @@
 language: java
 jdk:
   - oraclejdk8
+addons:
+  sonarcloud:
+    organization: "sonarcloud_organization_key" # the key of the org you chose at step #3
+    token:
+      secure: "J5WA9dBvF56HhrI8aoSeGDX53INUa350/ebCtQYqkP9F7yOprnIiZ0R2v5dtcNA79wbmdJSMGj8zgJ8TMiR98keiIlicxmeBGQd/zL660qM6TbutdakYjfEkuUAUpirfyiw/1ma9lY26jizP6sBszpPuONtOsm6ygFVo6JExfBlIfZ9oeZY4lNcoIVfWCy3ITlrRIw5ugjEddkHdsNftPabr6Q8Ti2wUmom43mUbHQhxvLCsU5HVocMcBWuMsKDQjOWfYVwliWngluToBa2bRhrvrrGmQznCoW0+nVL0u2R33nKriQ9383+PuAjWuDmmsnKVBpTFL8oBZDh++KUorRQ0JIWjGZWHVIwUryMJ+yd9u2MJYOrCCuZQT5mwAH4jwTs2V0NL9mqbDLL1FOGN/vuseZRy7S+9KIkZRH+ykt2dpHEb3g3LsFerLOvSyCL86XHzkbGa3mVonTnRqSMQItpN3vQxcf4McRs76/ph6AsSHZWYMoOcdj161ZbuTEqdXgGSQ2qBkd5lIR9DR8wbrfAnk8tnwxOmO+Pqh7mQWHYj0FsRnPBPQ6PJNdnUAtdgWqL3+twErX6Vr9OvPL9BCkK7pORuuF4Ye3VjT60IArj0PEm07gizzIKUqzKMlsrAUit3wdp8YMZwWVj+3bK5wJneVBS6Ej+SmTnXHPJwViM=" # encrypted value of your token
+script:
+  # other script steps might be done before running the actual analysis
+  - sonar-scanner
