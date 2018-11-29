@@ -37,7 +37,7 @@ public class UriApiControllerIntegrationTest {
     @Test
     public void deleteURITest() throws Exception {
         String id = "id_example";
-        ResponseEntity<Void> responseEntity = api.deleteURI(id);
+        ResponseEntity<Void> responseEntity = api.deleteURI(id, "");
         assertEquals(HttpStatus.NOT_IMPLEMENTED, responseEntity.getStatusCode());
     }
 

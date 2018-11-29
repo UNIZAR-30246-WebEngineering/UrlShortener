@@ -11,7 +11,7 @@ import java.util.Objects;
  * URIItem
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
 public class URIItem   {
   @JsonProperty("id")
@@ -19,6 +19,9 @@ public class URIItem   {
 
   @JsonProperty("redirection")
   private String redirection = null;
+
+  @JsonProperty("hashpass")
+  private String hashpass = null;
 
   public URIItem id(String id) {
     this.id = id;
@@ -62,6 +65,27 @@ public class URIItem   {
     this.redirection = redirection;
   }
 
+  public URIItem hashpass(String hashpass) {
+    this.hashpass = hashpass;
+    return this;
+  }
+
+  /**
+   * Get hashpass
+   * @return hashpass
+  **/
+  @ApiModelProperty(example = "adsgv674fjhag", required = true, value = "")
+  @NotNull
+
+
+  public String getHashpass() {
+    return hashpass;
+  }
+
+  public void setHashpass(String hashpass) {
+    this.hashpass = hashpass;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -73,12 +97,13 @@ public class URIItem   {
     }
     URIItem urIItem = (URIItem) o;
     return Objects.equals(this.id, urIItem.id) &&
-        Objects.equals(this.redirection, urIItem.redirection);
+        Objects.equals(this.redirection, urIItem.redirection) &&
+        Objects.equals(this.hashpass, urIItem.hashpass);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, redirection);
+    return Objects.hash(id, redirection, hashpass);
   }
 
   @Override
@@ -88,6 +113,7 @@ public class URIItem   {
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    redirection: ").append(toIndentedString(redirection)).append("\n");
+    sb.append("    hashpass: ").append(toIndentedString(hashpass)).append("\n");
     sb.append("}");
     return sb.toString();
   }
