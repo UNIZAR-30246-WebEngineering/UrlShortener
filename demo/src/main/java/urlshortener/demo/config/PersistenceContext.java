@@ -1,7 +1,7 @@
 package urlshortener.demo.config;
 
-import io.swagger.configuration.JacksonConfiguration;
-import io.swagger.configuration.SwaggerDocumentationConfig;
+import urlshortener.common.config.JacksonConfiguration;
+import urlshortener.common.config.SwaggerDocumentationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

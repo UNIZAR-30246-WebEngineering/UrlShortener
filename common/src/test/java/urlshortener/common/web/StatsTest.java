@@ -1,7 +1,7 @@
 package urlshortener.common.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.api.StatsApiController;
+import urlshortener.common.controller.impl.StatsApiController;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

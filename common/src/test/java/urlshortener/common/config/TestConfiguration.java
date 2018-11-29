@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootConfiguration
-@ComponentScan(basePackages = { "urlshortener.common", "io.swagger", "io.swagger.api" , "io.swagger.configuration" })
+@ComponentScan(basePackages = { "urlshortener.common" })
 @Import({PersistenceContext.class})
 public class TestConfiguration {
 
