@@ -34,6 +34,10 @@ pullRequest="${TRAVIS_PULL_REQUEST:-false}"
 
 printenv
 
+sonar-scanner -Dsonar.projectVersion=${VERSION}
+
+exit 0
+
 if [[ ! pullRequest || pullRequest = "false"  ]]; then
     echo "Perform branch analysis: $branch"
     ./gradlew sonarqube \
