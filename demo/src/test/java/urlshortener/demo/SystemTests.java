@@ -40,7 +40,7 @@ public class SystemTests {
 
 	@Test
 	public void testHome() {
-		ResponseEntity<String> entity = restTemplate.getForEntity("/", String.class);
+		ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:"+port+"/", String.class);
 		assertThat(entity.getStatusCode(), is(HttpStatus.OK));
 		assertTrue(entity.getHeaders().getContentType().isCompatibleWith(new MediaType("text", "html")));
 		assertThat(entity.getBody(), containsString("<title>URL"));
