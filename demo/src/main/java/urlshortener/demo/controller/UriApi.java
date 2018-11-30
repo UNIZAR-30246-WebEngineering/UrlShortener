@@ -5,14 +5,14 @@
  */
 package urlshortener.demo.controller;
 
-import urlshortener.demo.domain.URICreate;
-import urlshortener.demo.domain.URIItem;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import urlshortener.demo.domain.URICreate;
+import urlshortener.demo.domain.URIItem;
 
 import javax.validation.Valid;
 
@@ -34,7 +34,8 @@ public interface UriApi {
 
     @ApiOperation(value = "Creates a new redirection", nickname = "createURI", notes = "Create a new URI redirection ", response = URIItem.class, tags={ "F0 - The app will short, storage and get URI&#39;s", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "The URI redirection has been successfully created", response = URIItem.class) })
+        @ApiResponse(code = 201, message = "The URI redirection has been successfully created", response = URIItem.class),
+            @ApiResponse(code = 400, message = "Error creating resource") })
     @RequestMapping(value = "/uri",
         produces = { "application/json" }, 
         consumes = { "application/json" },
