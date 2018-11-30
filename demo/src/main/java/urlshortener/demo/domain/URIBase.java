@@ -43,4 +43,9 @@ public class URIBase {
         URIBase urIItem = (URIItem) o;
         return Objects.equals(this.hashpass, urIItem.hashpass);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getHashpass());
+    }
 }
