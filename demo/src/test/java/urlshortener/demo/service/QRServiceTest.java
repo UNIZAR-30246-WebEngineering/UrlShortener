@@ -1,7 +1,12 @@
 package urlshortener.demo.service;
 
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import urlshortener.demo.domain.QRItem;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class QRServiceTest extends BaseServiceTest<String, QRItem, QRService> {
 
     public QRServiceTest() {
