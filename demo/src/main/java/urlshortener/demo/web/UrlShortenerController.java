@@ -84,12 +84,16 @@ public class UrlShortenerController {
 		if (urlValidator.isValid(url)) {
 			String id = Hashing.murmur3_32()
 					.hashString(url, StandardCharsets.UTF_8).toString();
-			ShortURL su = new ShortURL(id, url,
-					linkTo(
+			ShortURL su = new ShortURL().hash(id).target(url)
+					.uri(linkTo(
 							methodOn(UrlShortenerController.class).redirectTo(
-									id, null)).toUri(), sponsor, new Date(
-							System.currentTimeMillis()), owner,
-					HttpStatus.TEMPORARY_REDIRECT.value(), true, ip, null);
+									id, null)).toUri())
+					.sponsor(sponsor)
+					.created(new Date(System.currentTimeMillis()))
+					.owner(owner)
+					.mode(HttpStatus.TEMPORARY_REDIRECT.value())
+					.safe(true)
+					.ip(ip);
 			return shortURLRepository.save(su);
 		} else {
 			return null;
