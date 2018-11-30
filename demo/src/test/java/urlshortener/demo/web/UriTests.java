@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import urlshortener.demo.controller.impl.UriApiController;
+import urlshortener.demo.domain.URIItem;
+import urlshortener.demo.service.impl.URIServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +28,9 @@ public class UriTests {
     @Mock
     private HttpServletRequest request;
 
+    @Mock
+    private URIServiceImpl service;
+
     @InjectMocks
     private UriApiController uriApiController;
 
@@ -37,6 +42,7 @@ public class UriTests {
 
     @Test
     public void getUriWorks() throws Exception {
+        service.add(new URIItem().id("abc").redirection("https://google.es").hashpass("abc"));
         mockMvc.perform(get("/uri/{id}", "1")).andDo(print())
                 .andExpect(status().isTemporaryRedirect())
                 .andExpect(redirectedUrl("https://google.es"));
