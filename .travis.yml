@@ -1,12 +1,13 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 addons:
   sonarcloud:
-    organization: "Blue-Bash_UrlShortener" # the key of the org you chose at step #3
+    organization: Blue-Bash_UrlShortener
     token:
-      secure: "1xMAYaKSuqmy4WxVQXpijcdGxv3Wxv/h7DST0SyS3AsNBhTT92IjHbw9X9jE6px1vsXQlnOCmsOgbt3gBgGs9G1+MzDjPqvaUkFl5VopTCZG3IJkoTRBGd8KR7ol61NkcaSH/GWl9g86nIdQ2pNoZi5OmhQ2+qx/VqArHd4uhY2qtpOMCw/cuQ4xs8MiSn6FtEndzg3csnuRRBbGPa/E3GlYX8TTbvNReIn4CU7kfSO3Q9HzkSExvWus8xpR5xMw6mtNy31f6reZgC8YsjgeRGCCVbj0hxzd9EjRRNGCEL4uvg1/A9O8KE7du1yMATb8R4BxvvQS6knw4kxU5SuOJC0bwbPAqPRrhLkcNip1AeYD4Ch2yn4cQOSTQFGhLTf83xdYtONHu0IMhXQZf0zgLCVqL9MMkUrFd7v7GP3haoqQTb3xGuPfMQwJX/ZCbYtBFoSK/2Dk4UWQzxdevZNOuE2W1W+gMOiuZvYxsLFd9qvPQVIgprGr+tqkjjrOwFewpzFBdfgXEUxm7WzGJ2IO84dP4Ld78SgBy7d0biyIYISgID8CXpcpYSCYeMOvj5ikAEjMmfCrhekk/1a6RmOeBlr5jPDou3SsHzZO02l+s7DKROipdyeGHwXZgePQyB0+9rErQDPQSRwGVaUFph8Gyq7IgbEEHVcIYWGiHkSa9Rc="
-  # encrypted value of your token
+      secure: 1xMAYaKSuqmy4WxVQXpijcdGxv3Wxv/h7DST0SyS3AsNBhTT92IjHbw9X9jE6px1vsXQlnOCmsOgbt3gBgGs9G1+MzDjPqvaUkFl5VopTCZG3IJkoTRBGd8KR7ol61NkcaSH/GWl9g86nIdQ2pNoZi5OmhQ2+qx/VqArHd4uhY2qtpOMCw/cuQ4xs8MiSn6FtEndzg3csnuRRBbGPa/E3GlYX8TTbvNReIn4CU7kfSO3Q9HzkSExvWus8xpR5xMw6mtNy31f6reZgC8YsjgeRGCCVbj0hxzd9EjRRNGCEL4uvg1/A9O8KE7du1yMATb8R4BxvvQS6knw4kxU5SuOJC0bwbPAqPRrhLkcNip1AeYD4Ch2yn4cQOSTQFGhLTf83xdYtONHu0IMhXQZf0zgLCVqL9MMkUrFd7v7GP3haoqQTb3xGuPfMQwJX/ZCbYtBFoSK/2Dk4UWQzxdevZNOuE2W1W+gMOiuZvYxsLFd9qvPQVIgprGr+tqkjjrOwFewpzFBdfgXEUxm7WzGJ2IO84dP4Ld78SgBy7d0biyIYISgID8CXpcpYSCYeMOvj5ikAEjMmfCrhekk/1a6RmOeBlr5jPDou3SsHzZO02l+s7DKROipdyeGHwXZgePQyB0+9rErQDPQSRwGVaUFph8Gyq7IgbEEHVcIYWGiHkSa9Rc=
 script:
-  # other script steps might be done before running the actual analysis
-  - sonar-scanner
+- bash sonar.sh
+before_install:
+- openssl aes-256-cbc -K $encrypted_4d334a2399be_key -iv $encrypted_4d334a2399be_iv
+  -in app.properties.enc -out app.properties -d
