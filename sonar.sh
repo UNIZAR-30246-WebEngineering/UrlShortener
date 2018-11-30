@@ -35,26 +35,3 @@ pullRequest="${TRAVIS_PULL_REQUEST:-false}"
 printenv
 
 sonar-scanner -Dsonar.projectVersion=${VERSION}
-
-exit 0
-
-if [[ ! pullRequest || pullRequest = "false"  ]]; then
-    echo "Perform branch analysis: $branch"
-    ./gradlew sonarqube \
-        -Dsonar.projectKey=Blue-Bash_UrlShortener \
-        -Dsonar.organization=blue-bash \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=${key} \
-        -Dsonar.branch.name=${branch} \
-        -Dsonar.projectVersion=${VERSION}
-else
-    echo "Perform #$pullRequest PR analysis from ${TRAVIS_BRANCH} to ${TRAVIS_PULL_REQUEST_BRANCH}"
-    ./gradlew sonarqube \
-        -Dsonar.projectKey=Blue-Bash_UrlShortener \
-        -Dsonar.organization=blue-bash \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=${key} \
-        -Dsonar.pullrequest.branch=${TRAVIS_PULL_REQUEST_BRANCH} \
-        -Dsonar.pullrequest.key=${pullRequest} \
-        -Dsonar.pullrequest.base=${TRAVIS_BRANCH}
-fi
