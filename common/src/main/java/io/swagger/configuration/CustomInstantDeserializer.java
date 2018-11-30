@@ -199,6 +199,8 @@ public class CustomInstantDeserializer<T extends Temporal>
         }
         return value;
       }
+      default:
+        break;
     }
     throw context.mappingException("Expected type float, integer, or string.");
   }
