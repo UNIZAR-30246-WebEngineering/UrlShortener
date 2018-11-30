@@ -32,7 +32,9 @@ key=`readJson app.properties sonar-key` || exit 1;
 branch=`git branch | grep \* | cut -d ' ' -f2`
 pullRequest="${TRAVIS_PULL_REQUEST:-false}"
 
-if [[ ! pullRequest || pullRequest=="false"  ]]; then
+echo $pullRequest
+
+if [[ ! pullRequest || pullRequest="false"  ]]; then
     echo "Perform branch analysis: $branch"
     ./gradlew sonarqube \
         -Dsonar.projectKey=Blue-Bash_UrlShortener \
