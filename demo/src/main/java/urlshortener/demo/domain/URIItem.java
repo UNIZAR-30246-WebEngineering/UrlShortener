@@ -13,7 +13,7 @@ import java.util.Objects;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
-public class URIItem   {
+public class URIItem implements BaseEntity<String>  {
   @JsonProperty("id")
   private String id = null;
 
