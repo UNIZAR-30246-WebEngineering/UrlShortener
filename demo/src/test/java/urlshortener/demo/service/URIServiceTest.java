@@ -11,7 +11,7 @@ import urlshortener.demo.domain.URIItem;
 public class URIServiceTest extends BaseServiceTest<String, URIItem, URIService>{
 
     public URIServiceTest(){
-        construct(new URIItem().id("abc").redirection("http://google.es").hashpass("none"),
+        super(new URIItem().id("abc").redirection("http://google.es").hashpass("none"),
                 new URIItem().id("abc").redirection("http://google.com").hashpass("none"),
                 new URIItem().id("abcd").redirection("http://google.es").hashpass("none"));
     }

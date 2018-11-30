@@ -17,7 +17,7 @@ public abstract class BaseServiceTest<K, V extends BaseEntity<K>, T extends ISer
     private T service;
     private V item1, item2, item3;
 
-    protected void construct(V item1, V item2, V item3){
+    protected BaseServiceTest(V item1, V item2, V item3){
         this.item1 = item1;
         this.item2 = item2;
         this.item3 = item3;
