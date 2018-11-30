@@ -34,7 +34,7 @@ public class UrlShortenerController {
 	protected ClickRepository clickRepository;
 
 	@RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
-	public ResponseEntity<?> redirectTo(@PathVariable String id,
+	public ResponseEntity<Void> redirectTo(@PathVariable String id,
 			HttpServletRequest request) {
 		ShortURL l = shortURLRepository.findByKey(id);
 		if (l != null) {
