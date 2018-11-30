@@ -16,8 +16,6 @@ public class ShortURL {
 	private String ip;
 	private String country;
 
-	public ShortURL() { }
-
 	public String getHash() {
 		return hash;
 	}

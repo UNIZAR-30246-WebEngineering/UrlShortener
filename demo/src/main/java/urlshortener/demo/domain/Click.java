@@ -13,7 +13,6 @@ public class Click {
 	private String ip;
 	private String country;
 
-	public Click(){ }
 
 	public Long getId() {
 		return id;
