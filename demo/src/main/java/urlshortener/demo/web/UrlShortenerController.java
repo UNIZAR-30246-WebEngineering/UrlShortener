@@ -34,7 +34,7 @@ public class UrlShortenerController {
 	protected ClickRepository clickRepository;
 
 	@RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
-	public ResponseEntity<?> redirectTo(@PathVariable String id,
+	public ResponseEntity<Void> redirectTo(@PathVariable String id,
 			HttpServletRequest request) {
 		ShortURL l = shortURLRepository.findByKey(id);
 		if (l != null) {
@@ -46,8 +46,7 @@ public class UrlShortenerController {
 	}
 
 	private void createAndSaveClick(String hash, String ip) {
-		Click cl = new Click(null, hash, new Date(System.currentTimeMillis()),
-				null, null, null, ip, null);
+		Click cl = new Click().hash(hash).created(new Date(System.currentTimeMillis())).ip(ip);
 		cl=clickRepository.save(cl);
 		LOG.info(cl!=null?"["+hash+"] saved with id ["+cl.getId()+"]":"["+hash+"] was not saved");
 	}
@@ -56,7 +55,7 @@ public class UrlShortenerController {
 		return request.getRemoteAddr();
 	}
 
-	private ResponseEntity<?> createSuccessfulRedirectToResponse(ShortURL l) {
+	private ResponseEntity<Void> createSuccessfulRedirectToResponse(ShortURL l) {
 		HttpHeaders h = new HttpHeaders();
 		h.setLocation(URI.create(l.getTarget()));
 		return new ResponseEntity<>(h, HttpStatus.valueOf(l.getMode()));
@@ -84,12 +83,16 @@ public class UrlShortenerController {
 		if (urlValidator.isValid(url)) {
 			String id = Hashing.murmur3_32()
 					.hashString(url, StandardCharsets.UTF_8).toString();
-			ShortURL su = new ShortURL(id, url,
-					linkTo(
+			ShortURL su = new ShortURL().hash(id).target(url)
+					.uri(linkTo(
 							methodOn(UrlShortenerController.class).redirectTo(
-									id, null)).toUri(), sponsor, new Date(
-							System.currentTimeMillis()), owner,
-					HttpStatus.TEMPORARY_REDIRECT.value(), true, ip, null);
+									id, null)).toUri())
+					.sponsor(sponsor)
+					.created(new Date(System.currentTimeMillis()))
+					.owner(owner)
+					.mode(HttpStatus.TEMPORARY_REDIRECT.value())
+					.safe(true)
+					.ip(ip);
 			return shortURLRepository.save(su);
 		} else {
 			return null;

@@ -16,24 +16,6 @@ public class ShortURL {
 	private String ip;
 	private String country;
 
-	public ShortURL(String hash, String target, URI uri, String sponsor,
-			Date created, String owner, Integer mode, Boolean safe, String ip,
-			String country) {
-		this.hash = hash;
-		this.target = target;
-		this.uri = uri;
-		this.sponsor = sponsor;
-		this.created = created;
-		this.owner = owner;
-		this.mode = mode;
-		this.safe = safe;
-		this.ip = ip;
-		this.country = country;
-	}
-
-	public ShortURL() {
-	}
-
 	public String getHash() {
 		return hash;
 	}
@@ -74,4 +56,53 @@ public class ShortURL {
 		return country;
 	}
 
+	public ShortURL hash(String hash) {
+		this.hash = hash;
+		return this;
+	}
+
+	public ShortURL target(String target) {
+		this.target = target;
+		return this;
+	}
+
+	public ShortURL uri(URI uri) {
+		this.uri = uri;
+		return this;
+	}
+
+	public ShortURL sponsor(String sponsor) {
+		this.sponsor = sponsor;
+		return this;
+	}
+
+	public ShortURL created(Date created) {
+		this.created = created;
+		return this;
+	}
+
+	public ShortURL owner(String owner) {
+		this.owner = owner;
+		return this;
+	}
+
+	public ShortURL mode(Integer mode) {
+		this.mode = mode;
+		return this;
+	}
+
+	public ShortURL safe(Boolean safe) {
+		this.safe = safe;
+		return this;
+	}
+
+	public ShortURL ip(String ip) {
+		this.ip = ip;
+		return this;
+	}
+
+	public ShortURL country(String country) {
+		this.country = country;
+		return this;
+	}
 }
