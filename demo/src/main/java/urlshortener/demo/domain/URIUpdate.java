@@ -12,12 +12,9 @@ import java.util.Objects;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-26T14:20:22.002Z[GMT]")
 
-public class URIUpdate   {
+public class URIUpdate extends URIBase {
   @JsonProperty("new-name")
   private String newName = null;
-
-  @JsonProperty("hashpass")
-  private String hashpass = null;
 
   public URIUpdate newName(String newName) {
     this.newName = newName;
@@ -39,27 +36,6 @@ public class URIUpdate   {
     this.newName = newName;
   }
 
-  public URIUpdate hashpass(String hashpass) {
-    this.hashpass = hashpass;
-    return this;
-  }
-
-  /**
-   * Get hashpass
-   * @return hashpass
-  **/
-  @ApiModelProperty(example = "skljdhgks", value = "")
-
-
-  public String getHashpass() {
-    return hashpass;
-  }
-
-  public void setHashpass(String hashpass) {
-    this.hashpass = hashpass;
-  }
-
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -69,13 +45,12 @@ public class URIUpdate   {
       return false;
     }
     URIUpdate urIUpdate = (URIUpdate) o;
-    return Objects.equals(this.newName, urIUpdate.newName) &&
-        Objects.equals(this.hashpass, urIUpdate.hashpass);
+    return super.equals(o) && Objects.equals(this.newName, urIUpdate.newName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(newName, hashpass);
+    return Objects.hash(newName, getHashpass());
   }
 
   @Override
@@ -84,7 +59,7 @@ public class URIUpdate   {
     sb.append("class URIUpdate {\n");
     
     sb.append("    newName: ").append(toIndentedString(newName)).append("\n");
-    sb.append("    hashpass: ").append(toIndentedString(hashpass)).append("\n");
+    sb.append("    hashpass: ").append(toIndentedString(getHashpass())).append("\n");
     sb.append("}");
     return sb.toString();
   }
