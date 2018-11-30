@@ -9,5 +9,5 @@ addons:
 script:
 - bash sonar.sh
 before_install:
-- openssl aes-256-cbc -K $encrypted_4d334a2399be_key -iv $encrypted_4d334a2399be_iv
+- openssl aes-256-cbc -K $encrypted_be44edb6a80d_key -iv $encrypted_be44edb6a80d_iv
   -in app.properties.enc -out app.properties -d
