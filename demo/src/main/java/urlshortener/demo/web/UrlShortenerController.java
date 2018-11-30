@@ -9,10 +9,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import urlshortener.common.domain.Click;
-import urlshortener.common.domain.ShortURL;
-import urlshortener.common.repository.ClickRepository;
-import urlshortener.common.repository.ShortURLRepository;
+import urlshortener.demo.domain.Click;
+import urlshortener.demo.domain.ShortURL;
+import urlshortener.demo.repository.ClickRepository;
+import urlshortener.demo.repository.ShortURLRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -33,7 +33,7 @@ public class UrlShortenerController {
 	@Autowired
 	protected ClickRepository clickRepository;
 
-	@RequestMapping(value = "/{id:(?!link).*}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
 	public ResponseEntity<?> redirectTo(@PathVariable String id,
 			HttpServletRequest request) {
 		ShortURL l = shortURLRepository.findByKey(id);
