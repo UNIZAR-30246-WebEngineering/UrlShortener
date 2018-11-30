@@ -136,17 +136,13 @@ public class CustomInstantDeserializer<T extends Temporal>
     //NOTE: Timestamps contain no timezone info, and are always in configured TZ. Only
     //string values have to be adjusted to the configured TZ.
     switch (parser.getCurrentTokenId()) {
-      case JsonTokenId.ID_NUMBER_FLOAT: {
+      case JsonTokenId.ID_NUMBER_FLOAT:
         return deserializeFloat(parser, context);
-      }
-
-      case JsonTokenId.ID_NUMBER_INT: {
+      case JsonTokenId.ID_NUMBER_INT:
         return deserializeInteger(parser, context);
-      }
+      case JsonTokenId.ID_STRING:
+        return deserializeString(parser, context);
 
-      case JsonTokenId.ID_STRING: {
-        deserializeString(parser, context);
-      }
       default:
         break;
     }
