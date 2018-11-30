@@ -10,11 +10,7 @@ import com.fasterxml.jackson.datatype.threetenbp.DecimalUtils;
 import com.fasterxml.jackson.datatype.threetenbp.deser.ThreeTenDateTimeDeserializerBase;
 import com.fasterxml.jackson.datatype.threetenbp.function.BiFunction;
 import com.fasterxml.jackson.datatype.threetenbp.function.Function;
-import org.threeten.bp.DateTimeException;
-import org.threeten.bp.Instant;
-import org.threeten.bp.OffsetDateTime;
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.*;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.Temporal;
 import org.threeten.bp.temporal.TemporalAccessor;
@@ -94,50 +90,62 @@ public class CustomInstantDeserializer<T extends Temporal>
     return new CustomInstantDeserializer<>(this, dtf);
   }
 
+  private T deserializeFloat(JsonParser parser, DeserializationContext context) throws IOException {
+    BigDecimal value = parser.getDecimalValue();
+    long seconds = value.longValue();
+    int nanoseconds = DecimalUtils.extractNanosecondDecimal(value, seconds);
+    return fromNanoseconds.apply(new FromDecimalArguments(
+            seconds, nanoseconds, getZone(context)));
+  }
+
+  private T deserializeInteger(JsonParser parser, DeserializationContext context) throws IOException {
+    long timestamp = parser.getLongValue();
+    if (context.isEnabled(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)) {
+      return this.fromNanoseconds.apply(new FromDecimalArguments(
+              timestamp, 0, this.getZone(context)
+      ));
+    }
+    return this.fromMilliseconds.apply(new FromIntegerArguments(
+            timestamp, this.getZone(context)
+    ));
+  }
+
+  private T deserializeString(JsonParser parser, DeserializationContext context) throws IOException {
+    String string = parser.getText().trim();
+    if (string.length() == 0) {
+      return null;
+    }
+    if (string.endsWith("+0000")) {
+      string = string.substring(0, string.length() - 5) + "Z";
+    }
+    T value;
+    try {
+      TemporalAccessor acc = _formatter.parse(string);
+      value = parsedToValue.apply(acc);
+      if (context.isEnabled(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)) {
+        return adjust.apply(value, this.getZone(context));
+      }
+    } catch (DateTimeException e) {
+      throw _peelDTE(e);
+    }
+    return value;
+  }
+
   @Override
   public T deserialize(JsonParser parser, DeserializationContext context) throws IOException {
     //NOTE: Timestamps contain no timezone info, and are always in configured TZ. Only
     //string values have to be adjusted to the configured TZ.
     switch (parser.getCurrentTokenId()) {
       case JsonTokenId.ID_NUMBER_FLOAT: {
-        BigDecimal value = parser.getDecimalValue();
-        long seconds = value.longValue();
-        int nanoseconds = DecimalUtils.extractNanosecondDecimal(value, seconds);
-        return fromNanoseconds.apply(new FromDecimalArguments(
-            seconds, nanoseconds, getZone(context)));
+        return deserializeFloat(parser, context);
       }
 
       case JsonTokenId.ID_NUMBER_INT: {
-        long timestamp = parser.getLongValue();
-        if (context.isEnabled(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS)) {
-          return this.fromNanoseconds.apply(new FromDecimalArguments(
-              timestamp, 0, this.getZone(context)
-          ));
-        }
-        return this.fromMilliseconds.apply(new FromIntegerArguments(
-            timestamp, this.getZone(context)
-        ));
+        return deserializeInteger(parser, context);
       }
 
       case JsonTokenId.ID_STRING: {
-        String string = parser.getText().trim();
-        if (string.length() == 0) {
-          return null;
-        }
-        if (string.endsWith("+0000")) {
-          string = string.substring(0, string.length() - 5) + "Z";
-        }
-        T value;
-        try {
-          TemporalAccessor acc = _formatter.parse(string);
-          value = parsedToValue.apply(acc);
-          if (context.isEnabled(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)) {
-            return adjust.apply(value, this.getZone(context));
-          }
-        } catch (DateTimeException e) {
-          throw _peelDTE(e);
-        }
-        return value;
+        deserializeString(parser, context);
       }
       default:
         break;
