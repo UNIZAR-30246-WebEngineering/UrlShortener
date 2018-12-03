@@ -65,7 +65,7 @@ public class UriApiControllerIntegrationTest {
     @Test
     public void getURITestOK() throws Exception {
         String id = "id_example";
-        service.add(new URIItem().id(id).redirection("http://google.es").hashpass("abc"));
+        service.add((URIItem) new URIItem().id(id).redirection("http://google.es").hashpass("abc"));
         try {
             ResponseEntity<Void> responseEntity = api.getURI(id);
             assertEquals(HttpStatus.TEMPORARY_REDIRECT, responseEntity.getStatusCode());

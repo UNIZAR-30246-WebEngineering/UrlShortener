@@ -1,3 +1,13 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+addons:
+  sonarcloud:
+    organization: blue-bash
+    token:
+      secure: yUN8YFkxwRsLb53i+J/G3huQHEg190cvTcslKyP/m7GBpjwcrcXcvI4/z32leAQkXWnLAsjCIsoQuNHtAdFZptSMFxV9nvLeAgSQdlv8WcPO3tTKSj7nR6vFgnhpIiS/FqRCKp1X3tPCtOI5JbGjxpJ8nKjkI7ow+MxaDIATLEELcEu6XNX8lwKnFlsfAwVBGcFBx3lfZLjTnbBe+PSjFy3oLrOZyfhKXIs8RF8c7xdPN1E8Au7mml5YqYsAev5IU4GkCd7GQRWTi9k/cnC4Y9T+FlbMZp5SjebQh4cNh8jagcVSLBDfTH9dRvdw2xiniOFqQzg2SQKjf3rn2UqMnKhMqYo2kGwQZKNrHj37RYpZtaNYvQTcnoQCPk4Bk0LwxCaxG7AYyMaMO8LbCJIoCYmsaXIIzHQ79UdttVsNN+vI0qtWB0uHPToyWoB3DcvoT8ocZRSYARcQ6g53BWnmpQu5gSxgNAHhnCL7eSLhvAZfeHbSf2ObGcaHpRhEI8GiBvK4jX66nuV0H+6CODcDgniBM99Urknu24V4jJjD079psX4lWKBOiuMfrtPSXAIOCEWpSgXX10lyD/rTTasBmb111novg8JNlzB+MwnLIoAte96+AyCoYh41A2HQUh+0EOOrcgxO3kYUiaaBUbUJ4w5ex11o3BQBxsq2dX2BCdM=
+script:
+- bash sonar.sh
+before_install:
+- openssl aes-256-cbc -K $encrypted_be44edb6a80d_key -iv $encrypted_be44edb6a80d_iv
+  -in app.properties.enc -out app.properties -d

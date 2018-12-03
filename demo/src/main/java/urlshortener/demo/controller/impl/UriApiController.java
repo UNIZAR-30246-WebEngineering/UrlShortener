@@ -14,6 +14,7 @@ import urlshortener.demo.controller.UriApi;
 import urlshortener.demo.domain.ErrorItem;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
+import urlshortener.demo.exception.UnknownEntityException;
 import urlshortener.demo.service.URIService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,9 +70,16 @@ public class UriApiController implements UriApi {
     public ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
 
+        String redirection;
+        URIItem item = uriService.get(id);
+        if(item == null){
+            throw new UnknownEntityException(1, "Unknown URI: " + id);
+        }
+        redirection = item.getRedirection();
+
         URI location = null;
         try {
-            location = new URI(uriService.get(id).getRedirection());
+            location = new URI(redirection);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
