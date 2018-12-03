@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static urlshortener.demo.web.fixture.UriItemFixture.someURI;
 
-
 public class UriTests {
     private MockMvc mockMvc;
 
