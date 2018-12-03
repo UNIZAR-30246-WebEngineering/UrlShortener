@@ -1,35 +1,18 @@
 package urlshortener.demo.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import urlshortener.demo.domain.BaseEntity;
 import urlshortener.demo.exception.CannotAddEntityException;
 import urlshortener.demo.exception.UnknownEntityException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
-public abstract class BaseServiceTest<K, V extends BaseEntity<K>, T extends IService<K, V>> {
+public abstract class BaseServiceTest {
 
-    @Autowired
-    private T service;
-    private V item1, item2, item3;
-
-    protected BaseServiceTest(V item1, V item2, V item3){
-        this.item1 = item1;
-        this.item2 = item2;
-        this.item3 = item3;
-    }
-
-    @Before
-    public void cleanUp(){
+    protected void cleanUp(IService service){
         service.removeAll();
     }
 
-    @Test
-    public void testInsertOK(){
+    protected <K, V extends BaseEntity<K>> void testInsertOK(IService<K, V> service, V item1){
         try {
             service.add(item1);
         } catch (CannotAddEntityException e) {
@@ -43,8 +26,7 @@ public abstract class BaseServiceTest<K, V extends BaseEntity<K>, T extends ISer
         }
     }
 
-    @Test
-    public void testInsertDuplicateFail(){
+    protected <K, V extends BaseEntity<K>> void testInsertDuplicateFail(IService<K, V> service, V item1, V item2){
         try {
             service.add(item1);
         } catch (CannotAddEntityException ignored) { }
@@ -59,8 +41,7 @@ public abstract class BaseServiceTest<K, V extends BaseEntity<K>, T extends ISer
         } catch (CannotAddEntityException ignored) { }
     }
 
-    @Test
-    public void testGet(){
+    protected <K, V extends BaseEntity<K>> void testGet(IService<K, V> service, V item1, V item2, V item3){
         try {
             service.add(item1);
         } catch (CannotAddEntityException ignored) { }
@@ -78,8 +59,8 @@ public abstract class BaseServiceTest<K, V extends BaseEntity<K>, T extends ISer
         } catch (UnknownEntityException ignored) { }
     }
 
-    @Test
-    public void testRemove(){
+
+    protected <K, V extends BaseEntity<K>> void testRemove(IService<K, V> service, V item1, V item2, V item3){
         try {
             service.add(item1);
             service.add(item3);
