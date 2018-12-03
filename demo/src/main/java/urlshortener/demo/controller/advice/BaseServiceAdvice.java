@@ -9,7 +9,7 @@ import urlshortener.demo.exception.UnknownEntityException;
 
 @ControllerAdvice
 public class BaseServiceAdvice {
-    /*
+    /**
      * Handles any InvalidWelcomeMessageException thrown by any controller method.
      * If any controller method throws that exception, this one is executed to return a message
      * 	with a BAD_REQUEST (400) error code.
@@ -17,7 +17,7 @@ public class BaseServiceAdvice {
     @ExceptionHandler(CannotAddEntityException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void cannotAddEntityHandler(CannotAddEntityException e){
-
+        //No implementation given due to Spring providing it
     }
 
     /*
@@ -28,6 +28,6 @@ public class BaseServiceAdvice {
     @ExceptionHandler(UnknownEntityException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void unknownEntityHandler(UnknownEntityException e){
-
+        //No implementation given due to Spring providing it
     }
 }
