@@ -14,6 +14,8 @@ import urlshortener.demo.controller.UriApi;
 import urlshortener.demo.domain.ErrorItem;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
+import urlshortener.demo.exception.UnknownEntityException;
+import urlshortener.demo.repository.URIRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -31,10 +33,13 @@ public class UriApiController implements UriApi {
 
     private final HttpServletRequest request;
 
+    private final URIRepository uriService;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public UriApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public UriApiController(ObjectMapper objectMapper, HttpServletRequest request, URIRepository uriService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.uriService = uriService;
     }
 
     public ResponseEntity<URIItem> changeURI(@ApiParam(value = "Optional description in *Markdown*" ,required=true )  @Valid @RequestBody URICreate body,@ApiParam(value = "",required=true) @PathVariable("name") String name) {
@@ -65,17 +70,23 @@ public class UriApiController implements UriApi {
     public ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
 
-        ResponseEntity<Void> r = new ResponseEntity<Void>(HttpStatus.TEMPORARY_REDIRECT);
-
+        String redirection;
+        URIItem item = uriService.get(id);
+        if(item == null){
+            throw new UnknownEntityException(1, "Unknown URI: " + id);
+        }
+        redirection = item.getRedirection();
 
         URI location = null;
         try {
-            location = new URI("https://google.es");
+            location = new URI(redirection);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(location);
+
         return new ResponseEntity<Void>(responseHeaders, HttpStatus.TEMPORARY_REDIRECT);
     }
 

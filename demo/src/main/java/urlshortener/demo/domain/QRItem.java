@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -12,7 +14,9 @@ import java.util.Objects;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-23T14:33:33.583Z[GMT]")
-public class QRItem   {
+@Entity
+public class QRItem implements BaseEntity<String>{
+  @Id
   @JsonProperty("uri")
   private String uri = null;
 
@@ -25,6 +29,11 @@ public class QRItem   {
   }
 
   public QRItem(){}
+
+  @Override
+  public String getId() {
+    return uri;
+  }
 
   /**
    * Get uri
