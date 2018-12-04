@@ -9,8 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import urlshortener.demo.controller.CheckApi;
+import urlshortener.demo.utils.CheckAlive;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
 
@@ -31,8 +35,22 @@ public class CheckApiController implements CheckApi {
 
     public ResponseEntity<Void> checkURI(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
         String accept = request.getHeader("Accept");
+        String uri = "";    //Se recupera la URI asociada a al parámetro "id"
+        CheckAlive c = new CheckAlive();
 
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        try {
+            HttpStatus httpStatus = HttpStatus.valueOf(c.makeRequest(uri));
+
+            return new ResponseEntity<Void>(httpStatus);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.I_AM_A_TEAPOT);
     }
-
 }

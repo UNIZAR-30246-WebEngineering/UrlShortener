@@ -18,8 +18,10 @@ public interface CheckApi {
 
     @ApiOperation(value = "Checks the state of the original URI", nickname = "checkURI", notes = "Checks the state of the original URI", tags={ "F5", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "The original URI is alive"),
-        @ApiResponse(code = 404, message = "The original URI is dead or the shortened URI doesn't exist") })
+            @ApiResponse(code = 200, message = "The original URI is alive"),
+            @ApiResponse(code = 404, message = "The original URI is dead or the shortened URI doesn't exist"),
+            @ApiResponse(code = 418, message = "I'm a teapot")
+    })
     @RequestMapping(value = "/check/{id}",
         method = RequestMethod.GET)
     ResponseEntity<Void> checkURI(@ApiParam(value = "",required=true) @PathVariable("id") String id);

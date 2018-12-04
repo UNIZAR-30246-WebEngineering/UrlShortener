@@ -34,8 +34,9 @@ public interface UriApi {
 
     @ApiOperation(value = "Creates a new redirection", nickname = "createURI", notes = "Create a new URI redirection ", response = URIItem.class, tags={ "F0 - The app will short, storage and get URI&#39;s", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "The URI redirection has been successfully created", response = URIItem.class),
-            @ApiResponse(code = 400, message = "Error creating resource") })
+            @ApiResponse(code = 201, message = "The URI redirection has been successfully created", response = URIItem.class),
+            @ApiResponse(code = 400, message = "The URI was not reachable", response = URIItem.class),
+            @ApiResponse(code = 418, message = "I'm a teapot", response = URIItem.class)})
     @RequestMapping(value = "/uri",
         produces = { "application/json" }, 
         consumes = { "application/json" },
@@ -54,8 +55,10 @@ public interface UriApi {
 
     @ApiOperation(value = "Returns the data of a redirection", nickname = "getURI", notes = "Get a URI redirection ", tags={ "F0 - The app will short, storage and get URI&#39;s", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 307, message = "Redirect to the real URI"),
-        @ApiResponse(code = 404, message = "The given URI couldn't be found") })
+            @ApiResponse(code = 307, message = "Redirect to the real URI"),
+            @ApiResponse(code = 404, message = "The given URI couldn't be found"),
+            @ApiResponse(code = 418, message = "I'm a teapot")
+    })
     @RequestMapping(value = "/uri/{id}",
         method = RequestMethod.GET)
     ResponseEntity<Void> getURI(@ApiParam(value = "",required=true) @PathVariable("id") String id);
