@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
 import urlshortener.demo.exception.UnknownEntityException;
-import urlshortener.demo.service.URIService;
+import urlshortener.demo.repository.URIRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -24,7 +24,7 @@ public class UriApiControllerIntegrationTest {
     private UriApi api;
 
     @Autowired
-    private URIService service;
+    private URIRepository service;
 
     @After
     public void cleanUp(){

@@ -1,4 +1,4 @@
-package urlshortener.demo.service;
+package urlshortener.demo.repository;
 
 import org.springframework.http.HttpStatus;
 import urlshortener.demo.domain.BaseEntity;
@@ -8,7 +8,7 @@ import urlshortener.demo.exception.UnknownEntityException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractService<K, V extends BaseEntity<K>> implements IService<K, V> {
+public class AbstractRepository<K, V extends BaseEntity<K>> implements IRepository<K, V> {
 
     private Map<K, V> uris = new HashMap<>();
 

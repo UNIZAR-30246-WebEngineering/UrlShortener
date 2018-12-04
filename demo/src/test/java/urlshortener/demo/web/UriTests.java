@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import urlshortener.demo.controller.advice.BaseServiceAdvice;
 import urlshortener.demo.controller.impl.UriApiController;
 import urlshortener.demo.domain.URIItem;
-import urlshortener.demo.service.URIService;
+import urlshortener.demo.repository.URIRepository;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +32,7 @@ public class UriTests {
     private HttpServletRequest request;
 
     @Mock
-    private URIService service;
+    private URIRepository service;
 
     @InjectMocks
     private UriApiController uriApiController;

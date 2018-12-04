@@ -15,7 +15,7 @@ import urlshortener.demo.domain.ErrorItem;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
 import urlshortener.demo.exception.UnknownEntityException;
-import urlshortener.demo.service.URIService;
+import urlshortener.demo.repository.URIRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,10 +33,10 @@ public class UriApiController implements UriApi {
 
     private final HttpServletRequest request;
 
-    private final URIService uriService;
+    private final URIRepository uriService;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public UriApiController(ObjectMapper objectMapper, HttpServletRequest request, URIService uriService) {
+    public UriApiController(ObjectMapper objectMapper, HttpServletRequest request, URIRepository uriService) {
         this.objectMapper = objectMapper;
         this.request = request;
         this.uriService = uriService;

@@ -1,4 +1,4 @@
-package urlshortener.demo.service;
+package urlshortener.demo.repository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,13 +9,13 @@ import urlshortener.demo.domain.QRItem;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class QRServiceTest extends BaseServiceTest {
+public class QRRepositoryTest extends BaseRepositoryTest {
 
     @Autowired
-    private QRService service;
+    private QRRepository service;
     private QRItem item1, item2, item3;
 
-    public QRServiceTest() {
+    public QRRepositoryTest() {
         this.item1 = new QRItem().uri("abc").qr("randomString");
         this.item2 = new QRItem().uri("abc").qr("randomString2");
         this.item3 = new QRItem().uri("abcd").qr("randomString3");

@@ -1,18 +1,19 @@
-package urlshortener.demo.service;
+package urlshortener.demo.repository;
 
 import urlshortener.demo.domain.BaseEntity;
 import urlshortener.demo.exception.CannotAddEntityException;
 import urlshortener.demo.exception.UnknownEntityException;
+import urlshortener.demo.repository.IRepository;
 
 import static org.junit.Assert.*;
 
-public abstract class BaseServiceTest {
+public abstract class BaseRepositoryTest {
 
-    protected void cleanUp(IService service){
+    protected void cleanUp(IRepository service){
         service.removeAll();
     }
 
-    protected <K, V extends BaseEntity<K>> void testInsertOK(IService<K, V> service, V item1){
+    protected <K, V extends BaseEntity<K>> void testInsertOK(IRepository<K, V> service, V item1){
         try {
             service.add(item1);
         } catch (CannotAddEntityException e) {
@@ -26,7 +27,7 @@ public abstract class BaseServiceTest {
         }
     }
 
-    protected <K, V extends BaseEntity<K>> void testInsertDuplicateFail(IService<K, V> service, V item1, V item2){
+    protected <K, V extends BaseEntity<K>> void testInsertDuplicateFail(IRepository<K, V> service, V item1, V item2){
         try {
             service.add(item1);
         } catch (CannotAddEntityException ignored) { }
@@ -41,7 +42,7 @@ public abstract class BaseServiceTest {
         } catch (CannotAddEntityException ignored) { }
     }
 
-    protected <K, V extends BaseEntity<K>> void testGet(IService<K, V> service, V item1, V item2, V item3){
+    protected <K, V extends BaseEntity<K>> void testGet(IRepository<K, V> service, V item1, V item2, V item3){
         try {
             service.add(item1);
         } catch (CannotAddEntityException ignored) { }
@@ -60,7 +61,7 @@ public abstract class BaseServiceTest {
     }
 
 
-    protected <K, V extends BaseEntity<K>> void testRemove(IService<K, V> service, V item1, V item2, V item3){
+    protected <K, V extends BaseEntity<K>> void testRemove(IRepository<K, V> service, V item1, V item2, V item3){
         try {
             service.add(item1);
             service.add(item3);
