@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import urlshortener.demo.domain.URIItem;
+import urlshortener.demo.repository.URIRepository;
 import urlshortener.demo.utils.CheckAlive;
 
 import java.io.IOException;
@@ -18,18 +19,19 @@ public class checkSchedule {
 
     private static final Logger log = LoggerFactory.getLogger(checkSchedule.class);
 
+    private final URIRepository uriService;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public checkSchedule(URIRepository uriService) {
+        this.uriService = uriService;
+    }
+
     @Scheduled(fixedRate = 5000)
     public void check() throws IOException {
         CheckAlive c = new CheckAlive();
 
         //HAY QUE CAMBIAR ESTE FRAGMENTO DE CÓDIGO Y RECUPERAR LA LISTA DE LA BD REAL
-        List<URIItem> uris = new ArrayList<>();
-        URIItem u = new URIItem();
-        u.setRedirection("https://google.es");
-        uris.add(u);
-        u = new URIItem();
-        u.setRedirection("https://stackoverflow.com");
-        uris.add(u);
+        List<URIItem> uris = uriService.comprobar();
 
         log.info("Comienza el checkeo de las URI...");
         for (int i=0; i < uris.size(); i++){
