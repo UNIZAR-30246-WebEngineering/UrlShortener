@@ -39,7 +39,8 @@ public class QrApiController implements QrApi {
         String height = request.getParameter("height");
         
         // Create Utils class to check integrity
-        if(width == null || height == null ){
+        if(width == null || height == null || Integer.valueOf(width) <= 30 || Integer.valueOf(height) <= 30)
+        {
             width = "500";
             height = "500";
         }

@@ -1,0 +1,66 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "UrlShortener.demo",
+                "projectName": "UrlShortener.demo",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\demo",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            },
+            {
+                "name": "UrlShortener.team",
+                "projectName": "UrlShortener.team",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\team",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            },
+            {
+                "name": "UrlShortener.common",
+                "projectName": "UrlShortener.common",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\common",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "UrlShortener.demo",
+                "projectName": "UrlShortener.demo",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\demo",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            },
+            {
+                "name": "UrlShortener.team",
+                "projectName": "UrlShortener.team",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\team",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            },
+            {
+                "name": "UrlShortener.common",
+                "projectName": "UrlShortener.common",
+                "workingDirectory": "c:\\Victor\\Tercero Ing. Informática\\S5\\Ingenieria Web\\Proyecto\\UrlShortener\\common",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
