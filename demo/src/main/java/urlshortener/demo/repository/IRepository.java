@@ -6,11 +6,11 @@ import urlshortener.demo.exception.UnknownEntityException;
 
 public interface IRepository<K, V extends BaseEntity<K>> {
 
-    void add(V value) throws CannotAddEntityException;
+    void add(V value);
 
-    V get(K key) throws UnknownEntityException;
+    V get(K key);
 
-    void remove(K key) throws UnknownEntityException;
+    void remove(K key);
 
     void removeAll();
 }
