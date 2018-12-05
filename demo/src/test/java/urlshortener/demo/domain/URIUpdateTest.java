@@ -3,11 +3,9 @@ package urlshortener.demo.domain;
 
 import org.junit.Test;
 
-import java.net.URI;
-
 import static org.junit.Assert.assertEquals;
 
-public class URIUpdateTests {
+public class URIUpdateTest {
 
     @Test
     public void testOK(){
