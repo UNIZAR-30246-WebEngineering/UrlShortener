@@ -9,5 +9,7 @@ addons:
 script:
 - bash sonar.sh
 before_install:
-- openssl aes-256-cbc -K $encrypted_be44edb6a80d_key -iv $encrypted_be44edb6a80d_iv
-  -in app.properties.enc -out app.properties -d
+  # Our tests inspect some of *our* git history
+  - git fetch --unshallow
+  - openssl aes-256-cbc -K $encrypted_be44edb6a80d_key -iv $encrypted_be44edb6a80d_iv
+    -in app.properties.enc -out app.properties -d
