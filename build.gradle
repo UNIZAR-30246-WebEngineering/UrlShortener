@@ -13,12 +13,12 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "2.6.2"
-    id 'jacoco'
 }
 
 allprojects {
     apply plugin: 'idea'
     apply plugin: 'eclipse'
+    apply plugin: 'jacoco'
 }
 
 // Instructions for each sub project
