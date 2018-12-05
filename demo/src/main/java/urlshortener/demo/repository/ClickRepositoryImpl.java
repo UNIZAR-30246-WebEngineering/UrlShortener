@@ -9,14 +9,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import urlshortener.demo.domain.Click;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Collections;
 import java.util.List;
-
-import urlshortener.demo.domain.Click;
 
 
 @Repository
@@ -25,10 +24,10 @@ public class ClickRepositoryImpl implements ClickRepository {
 	private static final Logger log = LoggerFactory
 			.getLogger(urlshortener.demo.repository.ClickRepositoryImpl.class);
 
-	private static final RowMapper<Click> rowMapper = (rs, rowNum) -> new Click(rs.getLong("id"), rs.getString("hash"),
-            rs.getDate("created"), rs.getString("referrer"),
-            rs.getString("browser"), rs.getString("platform"),
-            rs.getString("ip"), rs.getString("country"));
+	private static final RowMapper<Click> rowMapper = (rs, rowNum) -> new Click()
+			.id(rs.getLong("id")).hash(rs.getString("hash"))
+			.created(rs.getDate("created")).referrer(rs.getString("referrer")).browser(rs.getString("browser")).platform(rs.getString("platform"))
+					.ip(rs.getString("ip")).country(rs.getString("country"));
 
 	private JdbcTemplate jdbc;
 

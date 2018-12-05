@@ -8,11 +8,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import urlshortener.demo.domain.ShortURL;
 
 import java.util.Collections;
 import java.util.List;
-
-import urlshortener.demo.domain.ShortURL;
 
 @Repository
 public class ShortURLRepositoryImpl implements ShortURLRepository {
@@ -20,12 +19,12 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
 	private static final Logger log = LoggerFactory
 			.getLogger(ShortURLRepositoryImpl.class);
 
-	private static final RowMapper<ShortURL> rowMapper = (rs, rowNum) -> new ShortURL(rs.getString("hash"), rs.getString("target"),
-            null, rs.getString("sponsor"), rs.getDate("created"),
-            rs.getString("owner"), rs.getInt("mode"),
-            rs.getBoolean("safe"), rs.getString("ip"),
-            rs.getString("country"));
-
+	private static final RowMapper<ShortURL> rowMapper = (rs, rowNum) -> new ShortURL()
+			.hash(rs.getString("hash")).target(rs.getString("target"))
+            .sponsor(rs.getString("sponsor")).created(rs.getDate("created"))
+			.owner(rs.getString("owner")).mode(rs.getInt("mode"))
+			.safe(rs.getBoolean("safe")).ip(rs.getString("ip"))
+			.country(rs.getString("country"));
 	private JdbcTemplate jdbc;
 
 	public ShortURLRepositoryImpl(JdbcTemplate jdbc) {
