@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class URIUpdateTest {
+public class URIUpdateTests {
 
     @Test
     public void testOK(){
