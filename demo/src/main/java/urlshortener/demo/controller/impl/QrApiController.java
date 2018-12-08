@@ -2,7 +2,6 @@ package urlshortener.demo.controller.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import urlshortener.demo.controller.QrApi;
 import urlshortener.demo.domain.QRItem;
+import urlshortener.demo.utils.*;
 
 import javax.servlet.http.HttpServletRequest;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-21T05:15:43.072Z[GMT]")
@@ -37,17 +37,15 @@ public class QrApiController implements QrApi {
         String accept = request.getHeader("Accept");
         String width = request.getParameter("width");
         String height = request.getParameter("height");
-        
-        // Create Utils class to check integrity
-        if(width == null || height == null || Integer.valueOf(width) <= 30 || Integer.valueOf(height) <= 30)
-        {
-            width = "500";
-            height = "500";
-        }
+
+        // Check that width and heigth params are not null or negative
+        // and return int
+        int w = StringChecker.checkString2Int(width);
+        int h = StringChecker.checkString2Int(height);
 
         QRItem qr = new QRItem();
         qr.setUri(id);
-        qr.convertBase64(Integer.valueOf(width), Integer.valueOf(height));
+        qr.convertBase64(w, h);
         return new ResponseEntity<QRItem>(qr, HttpStatus.OK);
     }
 

@@ -1,9 +1,0 @@
-/build/
-/bin/
-/.settings/
-/.classpath
-/.project
-.vscode/
-.vscode/*
-team/bin/
-team/bin/*
