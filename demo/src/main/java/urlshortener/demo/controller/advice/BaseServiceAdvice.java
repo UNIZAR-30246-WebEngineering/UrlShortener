@@ -18,7 +18,7 @@ public class BaseServiceAdvice {
      */
     @ExceptionHandler({CannotAddEntityException.class, InvalidRequestParametersException.class, IncorrectHashPassException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void cannotAddEntityHandler(CannotAddEntityException e){
+    public void cannotAddEntityHandler(Throwable e){
         //No implementation given due to Spring providing it
     }
 
