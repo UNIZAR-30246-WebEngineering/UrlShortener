@@ -19,4 +19,8 @@ public class StringUtils {
         return str.toString();
     }
 
+
+    private StringUtils(){
+        //Let's hide the implicit public constructor as this class should never be instantiated.
+    }
 }

@@ -11,4 +11,8 @@ public class ParameterUtils {
         }
     }
 
+    private ParameterUtils(){
+        //Let's hide the implicit public constructor as this class should never be instantiated.
+    }
+
 }
