@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import urlshortener.demo.exception.CannotAddEntityException;
+import urlshortener.demo.exception.IncorrectHashPassException;
+import urlshortener.demo.exception.InvalidRequestParametersException;
 import urlshortener.demo.exception.UnknownEntityException;
 
 @ControllerAdvice
@@ -14,7 +16,7 @@ public class BaseServiceAdvice {
      * If any controller method throws that exception, this one is executed to return a message
      * 	with a BAD_REQUEST (400) error code.
      */
-    @ExceptionHandler(CannotAddEntityException.class)
+    @ExceptionHandler({CannotAddEntityException.class, InvalidRequestParametersException.class, IncorrectHashPassException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void cannotAddEntityHandler(CannotAddEntityException e){
         //No implementation given due to Spring providing it
