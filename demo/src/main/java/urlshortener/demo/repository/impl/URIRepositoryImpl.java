@@ -20,10 +20,10 @@ public class URIRepositoryImpl extends AbstractRepository<String, URIItem> imple
 
     @Override
     public long getRedirectionAmount(String hash, long timeFromNow) {
-        URIStats stats = this.stats.get(hash);
-        if(stats == null) throw new UnknownEntityException(HttpStatus.BAD_REQUEST.value(), "Unknown URI " + hash);
+        URIStats statsData = this.stats.get(hash);
+        if(statsData == null) throw new UnknownEntityException(HttpStatus.BAD_REQUEST.value(), "Unknown URI " + hash);
 
-        return stats.getAccesssesAfter(System.currentTimeMillis() - timeFromNow);
+        return statsData.getAccesssesAfter(System.currentTimeMillis() - timeFromNow);
     }
 
     @Override
