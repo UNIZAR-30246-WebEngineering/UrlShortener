@@ -60,6 +60,9 @@ project(':common') {
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         compile group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0'
 
+        // Required for QR generation
+        compile "com.google.zxing:core:3.3.0"
+        compile 'com.google.zxing:javase:3.3.0'
 
         compile 'org.springframework.boot:spring-boot-starter-web'
         compile 'org.springframework.boot:spring-boot-starter-jdbc'
