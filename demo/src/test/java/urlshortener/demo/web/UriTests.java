@@ -224,5 +224,14 @@ public class UriTests {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void getUriTooManyRequests() throws Exception {
+        URIItem item = someURI();
+        when(service.get("abc")).thenReturn(someURI());
+        when(service.getRedirectionAmount(eq("abc"), isA(Long.class))).thenReturn(101L);
+
+        mockMvc.perform(get("/uri/{id}", item.getId())).andDo(print())
+                .andExpect(status().isTooManyRequests());
+    }
 
 }

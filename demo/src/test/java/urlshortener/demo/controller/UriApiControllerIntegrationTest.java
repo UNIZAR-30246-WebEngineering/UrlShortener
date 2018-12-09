@@ -206,4 +206,17 @@ public class UriApiControllerIntegrationTest {
         assertEquals(HttpStatus.TEMPORARY_REDIRECT, responseEntity.getStatusCode());
     }
 
+    @Test
+    public void getURITestTooManyRequests() {
+        final long MAX_REDIRECTIONS = 100;
+        String id = "id_example";
+        repository.add((URIItem) new URIItem().id(id).redirection("http://google.es").hashpass("abc"));
+        for(int i = 0; i < MAX_REDIRECTIONS; i++){
+            repository.get(id);
+        }
+
+        ResponseEntity<Void> responseEntity = api.getURI(id);
+        assertEquals(HttpStatus.TOO_MANY_REQUESTS, responseEntity.getStatusCode());
+    }
+
 }
