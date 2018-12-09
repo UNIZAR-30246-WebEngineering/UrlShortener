@@ -20,14 +20,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static urlshortener.demo.web.MockUtils.mapObject;
 import static urlshortener.demo.web.fixture.UriItemFixture.*;
 
 public class UriTests {
+    private static final String HASHPASS_HEADER_KEY = "URIHashPass";
+    
     private MockMvc mockMvc;
 
     @Mock
@@ -136,6 +137,72 @@ public class UriTests {
     /*
      * Test DELETE /uri/{id}
      */
+
+    @Test
+    public void deleteURIOK() throws Exception {
+        URIItem uriItem = someURI();
+        String id = uriItem.getId();
+        
+        doNothing().when(service).remove(uriItem.getId());
+        doReturn(uriItem).when(service).get(uriItem.getId());
+
+        mockMvc.perform(delete("/uri/{id}", id).contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, uriItem.getHashpass())).andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteURIInvalidHashpash() throws Exception{
+        URIItem uriItem = someURI();
+        String id = uriItem.getId();
+
+        doNothing().when(service).remove(uriItem.getId());
+        doReturn(uriItem).when(service).get(uriItem.getId());
+
+        mockMvc.perform(delete("/uri/{id}", id).contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, "")).andDo(print())
+                .andExpect(status().isBadRequest());
+        
+        //We do not test header value null as it cannot have that value
+    }
+
+    @Test
+    public void deleteURIIcorrectHashpash() throws Exception{
+        URIItem uriItem = someURI();
+        String id = uriItem.getId();
+
+        doNothing().when(service).remove(uriItem.getId());
+        doReturn(uriItem).when(service).get(uriItem.getId());
+        
+        String hashPass = uriItem.getHashpass() + "invalid:D";
+
+        mockMvc.perform(delete("/uri/{id}", id).contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, hashPass)).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteURIIncorrectID() throws Exception{
+        URIItem uriItem = someURI();
+        String id = uriItem.getId() + "randomID:D";
+
+        doNothing().when(service).remove(uriItem.getId());
+        doReturn(uriItem).when(service).get(uriItem.getId());
+        doReturn(null).when(service).get(id);
+
+        mockMvc.perform(delete("/uri/{id}", id).contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, uriItem.getHashpass())).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteURIInvalidID() throws Exception{
+        URIItem uriItem = someURI();
+
+        doNothing().when(service).remove(uriItem.getId());
+        doReturn(uriItem).when(service).get(uriItem.getId());
+
+        mockMvc.perform(delete("/uri/{id}", "").contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, uriItem.getHashpass())).andDo(print())
+                .andExpect(status().isMethodNotAllowed());
+        mockMvc.perform(delete("/uri/{id}", (Object) null).contentType(MediaType.APPLICATION_JSON).content(mapObject(uriItem)).header(HASHPASS_HEADER_KEY, uriItem.getHashpass())).andDo(print())
+                .andExpect(status().isMethodNotAllowed());
+    }
 
     /*
      * Test GET /uri/{id}
