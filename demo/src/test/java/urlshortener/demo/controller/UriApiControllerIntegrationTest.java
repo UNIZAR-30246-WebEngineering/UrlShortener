@@ -133,7 +133,6 @@ public class UriApiControllerIntegrationTest {
 
     @Test
     public void deleteURIInvalidHashpash() {
-        //TODO Pass hashpash
         String hashpass = null;
         try {
             api.deleteURI(createdURIItem.getId(), hashpass);
@@ -150,7 +149,6 @@ public class UriApiControllerIntegrationTest {
 
     @Test
     public void deleteURIIcorrectHashpash() {
-        //TODO Pass hashpash
         String hashpass = createdURIItem.getHashpass() + "invalid";
         try {
             api.deleteURI(createdURIItem.getId(), hashpass);
@@ -171,7 +169,6 @@ public class UriApiControllerIntegrationTest {
 
     @Test
     public void deleteURIInvalidID() {
-        //TODO Pass hashpash
         String hashpass = createdURIItem.getHashpass();
         try {
             api.deleteURI("", hashpass);
