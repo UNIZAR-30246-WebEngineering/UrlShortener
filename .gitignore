@@ -24,5 +24,6 @@ team/.project/
 team/.settings/org.eclipse.buildship.core.prefs
 team/.settings/org.eclipse.jdt.core.prefs
 team/bin/main/urlshortener/team/Application.class
+.vscode
 
 app.properties

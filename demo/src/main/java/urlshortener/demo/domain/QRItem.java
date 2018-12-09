@@ -3,11 +3,20 @@ package urlshortener.demo.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.http.MediaType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+
+// Libraries for QR Generation
+import com.google.zxing.*;
+import com.google.zxing.common.BitMatrix;
+
+import com.google.zxing.client.j2se.*;
+import java.util.Base64;
+import java.io.ByteArrayOutputStream;
 
 /**
  * QRItem
@@ -54,6 +63,20 @@ public class QRItem implements BaseEntity<String>{
   public QRItem qr(String qr) {
     this.qr = qr;
     return this;
+  }
+
+  public void convertBase64(int width, int height){
+
+    ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+    try {
+      BitMatrix bitmatrix = new MultiFormatWriter().encode(this.uri, BarcodeFormat.QR_CODE, width, height);
+      MatrixToImageWriter.writeToStream(bitmatrix, MediaType.IMAGE_PNG.getSubtype(), oStream, new MatrixToImageConfig());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    this.qr = Base64.getEncoder().encodeToString(oStream.toByteArray());
+
   }
 
   /**

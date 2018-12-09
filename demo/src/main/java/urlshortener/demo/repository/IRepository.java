@@ -11,4 +11,8 @@ public interface IRepository<K, V extends BaseEntity<K>> {
     void remove(K key);
 
     void removeAll();
+
+    long getNextID();
+
+    boolean contains(K key);
 }

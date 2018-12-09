@@ -3,7 +3,6 @@ package urlshortener.demo.repository;
 import urlshortener.demo.domain.BaseEntity;
 import urlshortener.demo.exception.CannotAddEntityException;
 import urlshortener.demo.exception.UnknownEntityException;
-import urlshortener.demo.repository.IRepository;
 
 import static org.junit.Assert.*;
 
@@ -78,6 +77,14 @@ public abstract class BaseRepositoryTest {
             fail();
         } catch (UnknownEntityException ignored) {
         }
+    }
+
+    protected <K, V extends BaseEntity<K>> void testContains(IRepository<K, V> service, K item1){
+        assertTrue(service.contains(item1));
+    }
+
+    protected <K, V extends BaseEntity<K>> void testNotContains(IRepository<K, V> service, K item1){
+        assertFalse(service.contains(item1));
     }
 
 }
