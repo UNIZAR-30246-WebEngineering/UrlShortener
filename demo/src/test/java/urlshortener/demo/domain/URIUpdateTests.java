@@ -15,6 +15,14 @@ public class URIUpdateTests {
 
         assertEquals(uriUpdate3, uriUpdate1);
         assertEquals(uriUpdate3, uriUpdate2);
+        assertEquals("abc", uriUpdate1.getNewName());
+        assertEquals("abcd", uriUpdate1.getHashpass());
+    }
+
+    @Test
+    public void testToString(){
+        URIUpdate uriUpdate1 = (URIUpdate) new URIUpdate().newName("abc").hashpass("abcd");
+        assertEquals("class URIUpdate {\n    newName: abc\n    hashpass: abcd\n}", uriUpdate1.toString());
     }
 
 }
