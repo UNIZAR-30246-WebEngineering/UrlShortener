@@ -28,12 +28,6 @@ jacoco {
     reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-    }
-}
 
 allprojects {
     apply plugin: 'idea'
@@ -112,6 +106,13 @@ project(':demo') {
         // Testing framework
         testCompile 'org.springframework.boot:spring-boot-starter-test'
         testCompile 'org.apache.httpcomponents:httpclient'
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+        }
     }
 }
 
