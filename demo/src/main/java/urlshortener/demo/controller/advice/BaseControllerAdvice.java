@@ -10,7 +10,7 @@ import urlshortener.demo.exception.InvalidRequestParametersException;
 import urlshortener.demo.exception.UnknownEntityException;
 
 @ControllerAdvice
-public class BaseServiceAdvice {
+public class BaseControllerAdvice {
     /**
      * Handles any InvalidWelcomeMessageException thrown by any controller method.
      * If any controller method throws that exception, this one is executed to return a message

@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import urlshortener.demo.controller.advice.BaseServiceAdvice;
+import urlshortener.demo.controller.advice.BaseControllerAdvice;
 import urlshortener.demo.controller.impl.UriApiController;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
@@ -46,7 +46,7 @@ public class UriTests {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(uriApiController)
-                .setControllerAdvice(new BaseServiceAdvice()).build();
+                .setControllerAdvice(new BaseControllerAdvice()).build();
     }
 
     /*
