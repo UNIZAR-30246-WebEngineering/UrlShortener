@@ -9,18 +9,29 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
-
-    testCoverageEnabled true
 }
 
 plugins {
     id "org.sonarqube" version "2.6.2"
+    id 'jacoco'
 }
 
 sonarqube {
     properties {
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.organization', 'blue-bash'
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
     }
 }
 
