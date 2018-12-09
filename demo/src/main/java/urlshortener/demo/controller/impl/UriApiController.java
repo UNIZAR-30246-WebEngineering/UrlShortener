@@ -30,6 +30,12 @@ import java.net.URISyntaxException;
 @Controller
 public class UriApiController implements UriApi {
 
+    //Limit to K redirections in one hour
+    private static final long MAX_REDIRECTION_TIME = 3600000L;
+
+    //Limit to 100 redirections in X ms.
+    private static final long MAX_REDIRECTIONS = 100;
+
     private static final Logger log = LoggerFactory.getLogger(UriApiController.class);
 
     private final ObjectMapper objectMapper;
@@ -82,6 +88,11 @@ public class UriApiController implements UriApi {
         if(item == null){
             throw new UnknownEntityException(1, "Unknown URI: " + id);
         }
+
+        if(uriService.getRedirectionAmount(id, MAX_REDIRECTION_TIME) > MAX_REDIRECTIONS){
+            return new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS);
+        }
+
         redirection = item.getRedirection();
 
         URI location = null;
