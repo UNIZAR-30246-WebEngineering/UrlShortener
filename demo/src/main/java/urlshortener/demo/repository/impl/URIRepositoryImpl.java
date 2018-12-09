@@ -40,6 +40,18 @@ public class URIRepositoryImpl extends AbstractRepository<String, URIItem> imple
         return super.get(hash);
     }
 
+    @Override
+    public void remove(String hash) throws UnknownEntityException {
+        stats.remove(hash);
+        super.remove(hash);
+    }
+
+    @Override
+    public void removeAll() {
+        stats.clear();
+        super.removeAll();
+    }
+
     private static class URIStats{
         private List<Long> lastAccesses = new ArrayList<>();
 
