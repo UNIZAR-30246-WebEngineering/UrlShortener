@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import urlshortener.demo.domain.URIItem;
 
+import static org.junit.Assert.assertEquals;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -51,5 +53,15 @@ public class URIRepositoryTest extends BaseRepositoryTest {
     public void testContains(){
         super.testContains(repository, item1.getId());
         super.testNotContains(repository, "randomID :D");
+    }
+
+    @Test
+    public void testRedirectionAmount(){
+        repository.add(item1);
+        assertEquals(0, repository.getRedirectionAmount(item1.getId(), System.currentTimeMillis()));
+
+        repository.get(item1.getId());
+        assertEquals(1, repository.getRedirectionAmount(item1.getId(), System.currentTimeMillis()));
+        assertEquals(0, repository.getRedirectionAmount(item1.getId(), -1000));
     }
 }
