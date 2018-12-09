@@ -1,5 +1,6 @@
 package urlshortener.demo.repository;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class URIRepositoryTest extends BaseRepositoryTest {
         this.item3 = (URIItem) new URIItem().id("abcd").redirection("http://google.es").hashpass("none");
     }
 
-    @Test
+    @Before
     public void cleanUp() {
         super.cleanUp(repository);
     }
@@ -51,6 +52,7 @@ public class URIRepositoryTest extends BaseRepositoryTest {
 
     @Test
     public void testContains(){
+        repository.add(item1);
         super.testContains(repository, item1.getId());
         super.testNotContains(repository, "randomID :D");
     }
