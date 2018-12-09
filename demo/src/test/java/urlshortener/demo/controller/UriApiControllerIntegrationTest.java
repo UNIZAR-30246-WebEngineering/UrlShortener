@@ -48,12 +48,6 @@ public class UriApiControllerIntegrationTest {
     }
 
     /*
-     * TODO
-     *  - Test 9  : Delete with invalid id (DELETE /uri/{id})
-     *  - Test 10 : Delete with incorrect id (DELETE /uri/{id}) - Not Found
-     */
-
-    /*
      * Test PUT /uri/{id}
      */
     @Test
