@@ -82,7 +82,7 @@ public class UriTests {
     }
 
     @Test
-    public void createWithNameInvalidHash() throws Exception{
+    public void createWithNameDuplicateKey() throws Exception{
         //Test 3: Create uri with and existing id.
 
         doThrow(CannotAddEntityException.class).when(service).add(isA(URIItem.class));
@@ -96,6 +96,42 @@ public class UriTests {
     /*
      * Test PUT /uri
      */
+    @Test
+    public void createOK() throws Exception{
+        //Test 1: Create OK
+        doNothing().when(service).add(isA(URIItem.class));
+
+        URICreate uriCreate = someCorrectURICreate();
+        mockMvc.perform(put("/uri").contentType(MediaType.APPLICATION_JSON).content(mapObject(uriCreate))).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.redirection").value(uriCreate.getUri()));
+    }
+
+    @Test
+    public void createInvalidURL() throws Exception {
+        //Test 2: Create with invalid URL
+
+        doNothing().when(service).add(isA(URIItem.class));
+
+        URICreate uriCreate = someEmptyURICreate();
+        mockMvc.perform(put("/uri").contentType(MediaType.APPLICATION_JSON).content(mapObject(uriCreate))).andDo(print())
+                .andExpect(status().isBadRequest());
+
+        uriCreate = someNullURICreate();
+        mockMvc.perform(put("/uri").contentType(MediaType.APPLICATION_JSON).content(mapObject(uriCreate))).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createDuplicateKey() throws Exception{
+        //Test 3: Create uri with and existing id.
+
+        doThrow(CannotAddEntityException.class).when(service).add(isA(URIItem.class));
+
+        URICreate uriCreate = someCorrectURICreate();
+        mockMvc.perform(put("/uri").contentType(MediaType.APPLICATION_JSON).content(mapObject(uriCreate))).andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 
     /*
      * Test DELETE /uri/{id}
