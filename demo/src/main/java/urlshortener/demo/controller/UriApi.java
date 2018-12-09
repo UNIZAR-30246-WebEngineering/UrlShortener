@@ -7,10 +7,7 @@ package urlshortener.demo.controller;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import urlshortener.demo.domain.URICreate;
 import urlshortener.demo.domain.URIItem;
 
@@ -49,7 +46,7 @@ public interface UriApi {
         @ApiResponse(code = 404, message = "There is no URI with that hash") })
     @RequestMapping(value = "/uri/{id}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteURI(@ApiParam(value = "",required=true) @PathVariable("id") String id);
+    ResponseEntity<Void> deleteURI(@ApiParam(value = "",required=true) @PathVariable("id") String id, @RequestHeader("URIHassPass") String hashpass);
 
 
     @ApiOperation(value = "Returns the data of a redirection", nickname = "getURI", notes = "Get a URI redirection ", tags={ "F0 - The app will short, storage and get URI&#39;s", })
