@@ -35,3 +35,5 @@ pullRequest="${TRAVIS_PULL_REQUEST:-false}"
 printenv
 
 sonar-scanner -Dsonar.projectVersion=${VERSION}
+
+find .
