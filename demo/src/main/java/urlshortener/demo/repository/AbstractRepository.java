@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class AbstractRepository<K, V extends BaseEntity<K>> implements IRepository<K, V> {
 
+    private long nextID = 0;
     private Map<K, V> uris = new HashMap<>();
 
     @Override
@@ -19,6 +20,7 @@ public class AbstractRepository<K, V extends BaseEntity<K>> implements IReposito
         }
 
         uris.put(uri.getId(), uri);
+        nextID++;
     }
 
     @Override
@@ -41,6 +43,16 @@ public class AbstractRepository<K, V extends BaseEntity<K>> implements IReposito
     @Override
     public void removeAll() {
         uris.clear();
+    }
+
+    @Override
+    public long getNextID(){
+        return nextID;
+    }
+
+    @Override
+    public boolean contains(K key){
+        return uris.containsKey(key);
     }
 
 }

@@ -13,4 +13,8 @@ public interface IRepository<K, V extends BaseEntity<K>> {
     void remove(K key) throws UnknownEntityException;
 
     void removeAll();
+
+    long getNextID();
+
+    boolean contains(K key);
 }

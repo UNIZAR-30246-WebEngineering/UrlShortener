@@ -48,4 +48,8 @@ public class URIBase {
     public int hashCode() {
         return Objects.hash(getHashpass());
     }
+
+    public boolean checkHashPass(String hashpass) {
+        return this.hashpass != null && this.hashpass.equals(hashpass);
+    }
 }
