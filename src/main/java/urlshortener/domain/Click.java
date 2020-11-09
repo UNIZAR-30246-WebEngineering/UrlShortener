@@ -4,14 +4,14 @@ import java.sql.Date;
 
 public class Click {
 
-  private final Long id;
-  private final String hash;
-  private final Date created;
-  private final String referrer;
-  private final String browser;
-  private final String platform;
-  private final String ip;
-  private final String country;
+  private Long id;
+  private String hash;
+  private Date created;
+  private String referrer;
+  private String browser;
+  private String platform;
+  private String ip;
+  private String country;
 
   public Click(Long id, String hash, Date created, String referrer,
                String browser, String platform, String ip, String country) {
@@ -55,5 +55,37 @@ public class Click {
 
   public String getCountry() {
     return country;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setHash(String hash) {
+    this.hash = hash;
+  }
+
+  public void setCreated(java.sql.Date created) {
+    this.created = created;
+  }
+
+  public void setReferrer(String referrer) {
+    this.referrer = referrer;
+  }
+
+  public void setBrowser(String browser) {
+    this.browser = browser;
+  }
+
+  public void setPlatform(String platform) {
+    this.platform = platform;
+  }
+
+  public void setIp(String ip) {
+    this.ip = ip;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
   }
 }
