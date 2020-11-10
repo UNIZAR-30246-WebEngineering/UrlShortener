@@ -6,6 +6,7 @@ import static com.google.common.hash.Hashing.murmur3_32;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.UUID;
 import java.util.function.Function;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ public class ShortURLBuilder {
   private URI uri;
   private String sponsor;
   private Date created;
+  private Date expiration;
   private String owner;
   private Integer mode;
   private Boolean safe;
@@ -35,6 +37,7 @@ public class ShortURLBuilder {
         uri,
         sponsor,
         created,
+        expiration,
         owner,
         mode,
         safe,
@@ -57,6 +60,9 @@ public class ShortURLBuilder {
 
   ShortURLBuilder createdNow() {
     this.created = new Date(System.currentTimeMillis());
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.MONTH, 1);
+    this.expiration = new Date(calendar.getTimeInMillis());
     return this;
   }
 

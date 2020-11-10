@@ -12,6 +12,7 @@ CREATE TABLE SHORTURL
     TARGET  VARCHAR(1024),           -- Original URL
     SPONSOR VARCHAR(1024),           -- Sponsor URL
     CREATED TIMESTAMP,               -- Creation date
+    EXPIRATION DATE,                 -- Expiration date
     OWNER   VARCHAR(255),            -- User id
     MODE    INTEGER,                 -- Redirect mode
     SAFE    BOOLEAN,                 -- Safe target

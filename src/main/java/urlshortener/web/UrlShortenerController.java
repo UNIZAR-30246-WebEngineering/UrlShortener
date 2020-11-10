@@ -3,9 +3,7 @@ package urlshortener.web;
 import java.net.URI;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-
-import org.graalvm.compiler.hotspot.replacements.Log;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +34,18 @@ public class UrlShortenerController {
   @RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
   public ResponseEntity<?> redirectTo(@PathVariable String id,
                                       HttpServletRequest request) {
-    ShortURL l = shortUrlService.findByKey(id);
-    if (l != null) {
-      clickService.saveClick(id, extractIP(request));
-      return createSuccessfulRedirectToResponse(l);
+    if(shortUrlService.isExpired(id)) {
+      ShortURL l = shortUrlService.findByKey(id);
+      shortUrlService.delete(l.getHash());
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      ShortURL l = shortUrlService.findByKey(id);
+      if (l != null) {
+        clickService.saveClick(id, extractIP(request));
+        return createSuccessfulRedirectToResponse(l);
+      } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
     }
   }
 
