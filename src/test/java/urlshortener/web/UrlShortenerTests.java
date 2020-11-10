@@ -14,6 +14,8 @@ import static urlshortener.fixtures.ShortURLFixture.someUrl;
 
 
 import java.net.URI;
+import java.sql.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -117,6 +119,7 @@ public class UrlShortenerTests {
             "http://example.com/",
             URI.create("http://localhost/f684a3c4"),
             sponsor,
+            new Date(System.currentTimeMillis()),
             null,
             null,
             0,

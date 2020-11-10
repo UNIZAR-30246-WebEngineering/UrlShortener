@@ -10,6 +10,7 @@ public class ShortURL {
   private URI uri;
   private String sponsor;
   private Date created;
+  private Date expiration;
   private Long owner;
   private Integer mode;
   private Boolean safe;
@@ -18,13 +19,14 @@ public class ShortURL {
   private Long clicks;
 
   public ShortURL(String hash, String target, URI uri, String sponsor,
-                  Date created, Long owner, Integer mode, Boolean safe, String ip,
+                  Date created, Date expiration, Long owner, Integer mode, Boolean safe, String ip,
                   String country) {
     this.hash = hash;
     this.target = target;
     this.uri = uri;
     this.sponsor = sponsor;
     this.created = created;
+    this.expiration = expiration;
     this.owner = owner;
     this.mode = mode;
     this.safe = safe;
@@ -74,6 +76,14 @@ public class ShortURL {
 
   public String getCountry() {
     return country;
+  }
+
+  public Date getExpiration() {
+    return expiration;
+  }
+
+  public void setExpiration(java.sql.Date expiration) {
+    this.expiration = expiration;
   }
 
   public Long getClicks() { return clicks; }

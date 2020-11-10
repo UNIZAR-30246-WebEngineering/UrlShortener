@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 
 import net.minidev.json.JSONObject;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +36,18 @@ public class UrlShortenerController {
   @RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
   public ResponseEntity<?> redirectTo(@PathVariable String id,
                                       HttpServletRequest request) {
-    ShortURL l = shortUrlService.findByKey(id);
-    if (l != null) {
-      clickService.saveClick(id, extractIP(request));
-      return createSuccessfulRedirectToResponse(l);
+    if(shortUrlService.isExpired(id)) {
+      ShortURL l = shortUrlService.findByKey(id);
+      shortUrlService.delete(l.getHash());
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      ShortURL l = shortUrlService.findByKey(id);
+      if (l != null) {
+        clickService.saveClick(id, extractIP(request));
+        return createSuccessfulRedirectToResponse(l);
+      } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
     }
   }
 
@@ -78,7 +85,7 @@ public class UrlShortenerController {
 
   @RequestMapping(value = "/userlinks", method = RequestMethod.POST)
   public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
-                                            HttpServletRequest request) {
+                                                 HttpServletRequest request) {
 
     JSONObject urlShort = shortUrlService.findByUser(userId);
     return new ResponseEntity<>(urlShort, HttpStatus.CREATED);

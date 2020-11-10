@@ -19,7 +19,7 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
 
   private static final RowMapper<ShortURL> rowMapper =
       (rs, rowNum) -> new ShortURL(rs.getString("hash"), rs.getString("target"),
-          null, rs.getString("sponsor"), rs.getDate("created"),
+          null, rs.getString("sponsor"), rs.getDate("created"),rs.getDate("expiration"),
           rs.getLong("owner"), rs.getInt("mode"),
           rs.getBoolean("safe"), rs.getString("ip"),
           rs.getString("country"));
@@ -39,6 +39,7 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
       return jdbc.queryForObject("SELECT * FROM shorturl WHERE hash=?",
           rowMapper, id);
     } catch (Exception e) {
+      System.out.println("NOT FOUND");
       log.debug("When select for key {}", id, e);
       return null;
     }
@@ -47,9 +48,9 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
   @Override
   public ShortURL save(ShortURL su) {
     try {
-      jdbc.update("INSERT INTO shorturl VALUES (?,?,?,?,?,?,?,?,?)",
+      jdbc.update("INSERT INTO shorturl VALUES (?,?,?,?,?,?,?,?,?,?)",
           su.getHash(), su.getTarget(), su.getSponsor(),
-          su.getCreated(), su.getOwner(), su.getMode(), su.getSafe(),
+          su.getCreated(), su.getExpiration(), su.getOwner(), su.getMode(), su.getSafe(),
           su.getIP(), su.getCountry());
     } catch (DuplicateKeyException e) {
       log.debug("When insert for key {}", su.getHash(), e);
@@ -67,9 +68,10 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
     try {
       jdbc.update("UPDATE shorturl SET safe=? WHERE hash=?", safeness,
           su.getHash());
+      System.out.println("Guardado -->" + su.getCreated() + "-->" + su.getExpiration());
       return new ShortURL(
         su.getHash(), su.getTarget(), su.getUri(), su.getSponsor(),
-        su.getCreated(), su.getOwner(), su.getMode(), safeness,
+        su.getCreated(), su.getExpiration(), su.getOwner(), su.getMode(), safeness,
         su.getIP(), su.getCountry()
       );
     } catch (Exception e) {
@@ -82,8 +84,8 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
   public void update(ShortURL su) {
     try {
       jdbc.update(
-          "update shorturl set target=?, sponsor=?, created=?, owner=?, mode=?, safe=?, ip=?, country=? where hash=?",
-          su.getTarget(), su.getSponsor(), su.getCreated(),
+          "update shorturl set target=?, sponsor=?, created=?, expiration=?, owner=?, mode=?, safe=?, ip=?, country=? where hash=?",
+          su.getTarget(), su.getSponsor(), su.getCreated(), su.getExpiration(),
           su.getOwner(), su.getMode(), su.getSafe(), su.getIP(),
           su.getCountry(), su.getHash());
     } catch (Exception e) {
@@ -97,6 +99,23 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
       jdbc.update("delete from shorturl where hash=?", hash);
     } catch (Exception e) {
       log.debug("When delete for hash {}", hash, e);
+    }
+  }
+
+  @Override
+  public boolean isExpired(String id) {
+    try {
+      ShortURL shortURL = jdbc.queryForObject("SELECT * FROM shorturl WHERE hash=?",
+              rowMapper, id);
+
+      if(shortURL.getExpiration().getTime() < System.currentTimeMillis()){
+        return false;
+      } else {
+        return false;
+      }
+    } catch (Exception e) {
+      log.debug("When select for key {}", id, e);
+      return false;
     }
   }
 
