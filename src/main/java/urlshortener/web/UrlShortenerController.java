@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import urlshortener.domain.ShortURL;
 import urlshortener.service.ClickService;
 import urlshortener.service.ShortURLService;
+import urlshortener.service.URLValidatorService;
 
 @RestController
 public class UrlShortenerController {
@@ -43,9 +44,9 @@ public class UrlShortenerController {
                                             @RequestParam(value = "sponsor", required = false)
                                                 String sponsor,
                                             HttpServletRequest request) {
-    UrlValidator urlValidator = new UrlValidator(new String[] {"http",
-        "https"});
-    if (urlValidator.isValid(url)) {
+
+    URLValidatorService urlValidator = new URLValidatorService(url);
+    if (urlValidator.isValid()) {
       ShortURL su = shortUrlService.save(url, sponsor, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
