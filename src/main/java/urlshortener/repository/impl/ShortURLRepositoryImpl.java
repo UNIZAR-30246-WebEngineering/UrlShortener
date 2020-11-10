@@ -20,9 +20,12 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
   private static final RowMapper<ShortURL> rowMapper =
       (rs, rowNum) -> new ShortURL(rs.getString("hash"), rs.getString("target"),
           null, rs.getString("sponsor"), rs.getDate("created"),
-          rs.getString("owner"), rs.getInt("mode"),
+          rs.getLong("owner"), rs.getInt("mode"),
           rs.getBoolean("safe"), rs.getString("ip"),
           rs.getString("country"));
+
+  private static final RowMapper<Long> rowMapperCount =
+          (rs, rowNum) -> rs.getLong(1);
 
   private final JdbcTemplate jdbc;
 
@@ -53,6 +56,7 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
       return su;
     } catch (Exception e) {
       log.debug("When insert", e);
+      System.out.println(e);
       return null;
     }
     return su;
@@ -110,12 +114,39 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
   @Override
   public List<ShortURL> list(Long limit, Long offset) {
     try {
-      return jdbc.query("SELECT * FROM shorturl LIMIT ? OFFSET ?",
+      List<ShortURL> shortURLS =  jdbc.query("SELECT * FROM shorturl LIMIT ? OFFSET ?",
           new Object[] {limit, offset}, rowMapper);
+      return shortURLS;
     } catch (Exception e) {
       log.debug("When select for limit {} and offset {}", limit, offset, e);
       return Collections.emptyList();
     }
+  }
+
+  @Override
+  public List<ShortURL> findByUser(String userId) {
+    try {
+      List<ShortURL>  shortURLS = jdbc.query("SELECT * FROM shorturl WHERE owner = ?",
+                                  new Object[] {userId}, rowMapper);
+
+      for (ShortURL url : shortURLS) {
+        System.out.println("Entro");
+        System.out.println(url.getTarget());
+        url.setClicks(countClicks(url));
+        System.out.println("primera iteracion ok");
+      }
+
+      return  shortURLS;
+    } catch (Exception e) {
+      System.out.println(e);
+      log.debug("When select for target " + userId, e);
+      return Collections.emptyList();
+    }
+  }
+
+  private Long countClicks(ShortURL su) {
+    return jdbc.query("SELECT count(*) FROM CLICK WHERE HASH = ?", new Object[] {su.getHash()},
+            rowMapperCount).get(0);
   }
 
   @Override

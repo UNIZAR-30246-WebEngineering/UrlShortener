@@ -4,6 +4,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
+import java.util.List;
+
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
 import urlshortener.domain.ShortURL;
 import urlshortener.repository.ShortURLRepository;
@@ -22,14 +26,49 @@ public class ShortURLService {
     return shortURLRepository.findByKey(id);
   }
 
-  public ShortURL save(String url, String sponsor, String ip) {
+  public JSONObject findByUser(String userId) {
+    List<ShortURL> test = shortURLRepository.findByUser(userId);
+    System.out.println("abe ahora!!");
+    for (ShortURL s : test) {
+      System.out.println(s.getTarget());
+    }
+    System.out.println("abe ahora ok");
+     return toJson(shortURLRepository.findByUser(userId));
+  }
+
+  private JSONObject toJson(List<ShortURL> shortList) {
+    JSONObject jObject = new JSONObject();
+    for (ShortURL s : shortList) {
+      System.out.println(s.getTarget());
+    }
+    try
+    {
+      JSONArray jArray = new JSONArray();
+      for (ShortURL su : shortList)
+      {
+        JSONObject shortJSON = new JSONObject();
+        shortJSON.put("hash", su.getHash());
+        shortJSON.put("uri", su.getTarget());
+        shortJSON.put("clicks", su.getClicks());
+        jArray.add(shortJSON);
+      }
+      jObject.put("urlList", jArray);
+      System.out.println(jObject);
+      return jObject;
+    } catch (Exception e) {
+      return null;
+    }
+
+  }
+
+  public ShortURL save(String url, String sponsor, String owner, String ip) {
     ShortURL su = ShortURLBuilder.newInstance()
         .target(url)
         .uri((String hash) -> linkTo(methodOn(UrlShortenerController.class).redirectTo(hash, null))
             .toUri())
         .sponsor(sponsor)
         .createdNow()
-        .randomOwner()
+        .owner(owner)
         .temporaryRedirect()
         .treatAsSafe()
         .ip(ip)

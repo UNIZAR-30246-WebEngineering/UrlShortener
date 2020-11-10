@@ -18,7 +18,7 @@ public class ShortURLBuilder {
   private URI uri;
   private String sponsor;
   private Date created;
-  private String owner;
+  private Long owner;
   private Integer mode;
   private Boolean safe;
   private String ip;
@@ -60,8 +60,8 @@ public class ShortURLBuilder {
     return this;
   }
 
-  ShortURLBuilder randomOwner() {
-    this.owner = UUID.randomUUID().toString();
+  ShortURLBuilder owner(String owner) {
+    this.owner = Long.parseLong(owner);
     return this;
   }
 

@@ -12,7 +12,7 @@ CREATE TABLE SHORTURL
     TARGET  VARCHAR(1024),           -- Original URL
     SPONSOR VARCHAR(1024),           -- Sponsor URL
     CREATED TIMESTAMP,               -- Creation date
-    OWNER   VARCHAR(255),            -- User id
+    OWNER   BIGINT,           -- User id
     MODE    INTEGER,                 -- Redirect mode
     SAFE    BOOLEAN,                 -- Safe target
     IP      VARCHAR(20),             -- IP
@@ -37,7 +37,9 @@ CREATE TABLE CLICK
 
 CREATE TABLE USER
 (
-    ID       BIGINT IDENTITY,                                             -- KEY
+    ID       BIGINT IDENTITY PRIMARY KEY,                                 -- KEY
     USERNAME VARCHAR(15) UNIQUE,                                          -- Username
     PASSWORD VARCHAR(50)                                                  -- Password
-)
+);
+
+ALTER TABLE SHORTURL ADD FOREIGN KEY (OWNER) REFERENCES USER (ID);

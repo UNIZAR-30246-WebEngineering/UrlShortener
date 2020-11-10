@@ -1,11 +1,10 @@
 package urlshortener.web;
 
 import java.net.URI;
-import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.graalvm.compiler.hotspot.replacements.Log;
-import org.slf4j.LoggerFactory;
+import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +51,7 @@ public class UrlShortenerController {
     User u = userService.save(username, password);
 
     if (u != null) {
+
       return new ResponseEntity<>(HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -60,13 +60,13 @@ public class UrlShortenerController {
 
   @RequestMapping(value = "/link", method = RequestMethod.POST)
   public ResponseEntity<ShortURL> shortener(@RequestParam("url") String url,
-                                            @RequestParam(value = "sponsor", required = false)
-                                                String sponsor,
+                                            @RequestParam(value = "sponsor", required = false) String sponsor,
+                                            @RequestParam("uuid") String userId,
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
     if (urlValidator.isValid()) {
-      ShortURL su = shortUrlService.save(url, sponsor, request.getRemoteAddr());
+      ShortURL su = shortUrlService.save(url, sponsor, userId, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
       // Devolver la baina de Martín
@@ -74,6 +74,15 @@ public class UrlShortenerController {
     } else {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @RequestMapping(value = "/userlinks", method = RequestMethod.POST)
+  public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
+                                            HttpServletRequest request) {
+
+    JSONObject urlShort = shortUrlService.findByUser(userId);
+    return new ResponseEntity<>(urlShort, HttpStatus.CREATED);
+
   }
 
   private String extractIP(HttpServletRequest request) {

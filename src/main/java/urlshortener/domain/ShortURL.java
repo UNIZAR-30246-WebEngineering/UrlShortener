@@ -10,14 +10,15 @@ public class ShortURL {
   private URI uri;
   private String sponsor;
   private Date created;
-  private String owner;
+  private Long owner;
   private Integer mode;
   private Boolean safe;
   private String ip;
   private String country;
+  private Long clicks;
 
   public ShortURL(String hash, String target, URI uri, String sponsor,
-                  Date created, String owner, Integer mode, Boolean safe, String ip,
+                  Date created, Long owner, Integer mode, Boolean safe, String ip,
                   String country) {
     this.hash = hash;
     this.target = target;
@@ -29,6 +30,7 @@ public class ShortURL {
     this.safe = safe;
     this.ip = ip;
     this.country = country;
+
   }
 
   public ShortURL() {
@@ -50,7 +52,7 @@ public class ShortURL {
     return created;
   }
 
-  public String getOwner() {
+  public Long getOwner() {
     return owner;
   }
 
@@ -74,9 +76,13 @@ public class ShortURL {
     return country;
   }
 
+  public Long getClicks() { return clicks; }
+
   public void setHash(String hash) {
     this.hash = hash;
   }
+
+  public void setClicks(Long clicks) { this.clicks = clicks; }
 
   public void setTarget(String target) {
     this.target = target;
@@ -94,7 +100,7 @@ public class ShortURL {
     this.created = created;
   }
 
-  public void setOwner(String owner) {
+  public void setOwner(Long owner) {
     this.owner = owner;
   }
 
