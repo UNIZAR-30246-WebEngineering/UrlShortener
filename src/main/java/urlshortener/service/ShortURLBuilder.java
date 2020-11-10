@@ -7,7 +7,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.UUID;
 import java.util.function.Function;
 import org.springframework.http.HttpStatus;
 import urlshortener.domain.ShortURL;
@@ -20,7 +19,7 @@ public class ShortURLBuilder {
   private String sponsor;
   private Date created;
   private Date expiration;
-  private String owner;
+  private Long owner;
   private Integer mode;
   private Boolean safe;
   private String ip;
@@ -66,8 +65,8 @@ public class ShortURLBuilder {
     return this;
   }
 
-  ShortURLBuilder randomOwner() {
-    this.owner = UUID.randomUUID().toString();
+  ShortURLBuilder owner(String owner) {
+    this.owner = Long.parseLong(owner);
     return this;
   }
 

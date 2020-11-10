@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class User {
 
-  private int id;
+  private long id;
   private String username;
   private String password;
 
@@ -28,5 +28,13 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 }
