@@ -21,4 +21,13 @@ public class UserService {
 
     return userRepository.save(u);
   }
+
+  public User login(String username, String password) {
+    User u = UserBuilder.newInstance()
+            .username(username)
+            .password(password)
+            .build();
+
+    return userRepository.login(u);
+  }
 }

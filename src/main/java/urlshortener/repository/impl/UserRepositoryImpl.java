@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import urlshortener.domain.User;
 import urlshortener.repository.UserRepository;
 
-import java.sql.ResultSet;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,6 +79,18 @@ public class UserRepositoryImpl implements UserRepository {
     } catch (Exception e) {
       return -1;
     }
+  }
+
+  @Override
+  public User login(User u) {
+    List<User> listUsers =  jdbc.query("SELECT * FROM user WHERE USERNAME = ? AND PASSWORD = ?",
+            new Object[] {u.getUsername(), u.getPassword()}, rowMapper);
+
+    if (listUsers.isEmpty()) {
+      return null;
+    }
+
+    return listUsers.get(0);
   }
 
 

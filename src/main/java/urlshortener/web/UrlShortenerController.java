@@ -64,6 +64,19 @@ public class UrlShortenerController {
     }
   }
 
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
+  public ResponseEntity<?> login(@RequestParam("username") String username,
+                                    @RequestParam("password") String password) {
+
+    User u = userService.login(username, password);
+
+    if (u != null) {
+      return new ResponseEntity<>(u.getId(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+  }
+
   @RequestMapping(value = "/link", method = RequestMethod.POST)
   public ResponseEntity<ShortURL> shortener(@RequestParam("url") String url,
                                             @RequestParam(value = "sponsor", required = false) String sponsor,
