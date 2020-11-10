@@ -39,7 +39,6 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
       return jdbc.queryForObject("SELECT * FROM shorturl WHERE hash=?",
           rowMapper, id);
     } catch (Exception e) {
-      System.out.println("NOT FOUND");
       log.debug("When select for key {}", id, e);
       return null;
     }
@@ -53,12 +52,10 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
           su.getCreated(), su.getExpiration(), su.getOwner(), su.getMode(), su.getSafe(),
           su.getIP(), su.getCountry());
     } catch (DuplicateKeyException e) {
-      System.out.println("When insert: " + e);
       log.debug("When insert for key {}", su.getHash(), e);
       return su;
     } catch (Exception e) {
       log.debug("When insert", e);
-      System.out.println("When insert: " + e);
       return null;
     }
     return su;
@@ -69,7 +66,6 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
     try {
       jdbc.update("UPDATE shorturl SET safe=? WHERE hash=?", safeness,
           su.getHash());
-      System.out.println("Guardado -->" + su.getCreated() + "-->" + su.getExpiration());
       return new ShortURL(
         su.getHash(), su.getTarget(), su.getUri(), su.getSponsor(),
         su.getCreated(), su.getExpiration(), su.getOwner(), su.getMode(), safeness,
@@ -150,15 +146,11 @@ public class ShortURLRepositoryImpl implements ShortURLRepository {
                                   new Object[] {userId}, rowMapper);
 
       for (ShortURL url : shortURLS) {
-        System.out.println("Entro");
-        System.out.println(url.getTarget());
         url.setClicks(countClicks(url));
-        System.out.println("primera iteracion ok");
       }
 
       return  shortURLS;
     } catch (Exception e) {
-      System.out.println(e);
       log.debug("When select for target " + userId, e);
       return Collections.emptyList();
     }

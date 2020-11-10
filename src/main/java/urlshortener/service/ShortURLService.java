@@ -28,19 +28,13 @@ public class ShortURLService {
 
   public JSONObject findByUser(String userId) {
     List<ShortURL> test = shortURLRepository.findByUser(userId);
-    System.out.println("abe ahora!!");
-    for (ShortURL s : test) {
-      System.out.println(s.getTarget());
-    }
-    System.out.println("abe ahora ok");
+
      return toJson(shortURLRepository.findByUser(userId));
   }
 
   private JSONObject toJson(List<ShortURL> shortList) {
     JSONObject jObject = new JSONObject();
-    for (ShortURL s : shortList) {
-      System.out.println(s.getTarget());
-    }
+
     try
     {
       JSONArray jArray = new JSONArray();
@@ -53,7 +47,6 @@ public class ShortURLService {
         jArray.add(shortJSON);
       }
       jObject.put("urlList", jArray);
-      System.out.println(jObject);
       return jObject;
     } catch (Exception e) {
       return null;
