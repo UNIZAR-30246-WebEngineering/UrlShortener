@@ -1,8 +1,11 @@
 package urlshortener.web;
 
 import java.net.URI;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.validator.routines.UrlValidator;
+
+import org.graalvm.compiler.hotspot.replacements.Log;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import urlshortener.domain.ShortURL;
+import urlshortener.domain.User;
 import urlshortener.service.ClickService;
 import urlshortener.service.ShortURLService;
 import urlshortener.service.URLValidatorService;
+import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
   private final ShortURLService shortUrlService;
-
   private final ClickService clickService;
+  private final UserService userService;
 
-  public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService) {
+  public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService, UserService userService) {
     this.shortUrlService = shortUrlService;
     this.clickService = clickService;
+    this.userService = userService;
   }
 
   @RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
@@ -39,6 +45,19 @@ public class UrlShortenerController {
     }
   }
 
+  @RequestMapping(value = "/register", method = RequestMethod.POST)
+  public ResponseEntity<?> register(@RequestParam("username") String username,
+                                    @RequestParam("password") String password) {
+
+    User u = userService.save(username, password);
+
+    if (u != null) {
+      return new ResponseEntity<>(HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @RequestMapping(value = "/link", method = RequestMethod.POST)
   public ResponseEntity<ShortURL> shortener(@RequestParam("url") String url,
                                             @RequestParam(value = "sponsor", required = false)
@@ -50,6 +69,7 @@ public class UrlShortenerController {
       ShortURL su = shortUrlService.save(url, sponsor, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
+      // Devolver la baina de Martín
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -2,6 +2,7 @@
 
 DROP TABLE CLICK IF EXISTS;
 DROP TABLE SHORTURL IF EXISTS;
+DROP TABLE USER IF EXISTS;
 
 -- ShortURL
 
@@ -30,4 +31,13 @@ CREATE TABLE CLICK
     PLATFORM VARCHAR(50),                                                 -- Platform
     IP       VARCHAR(20),                                                 -- IP
     COUNTRY  VARCHAR(50)                                                  -- Country
+);
+
+-- USER
+
+CREATE TABLE USER
+(
+    ID       BIGINT IDENTITY,                                             -- KEY
+    USERNAME VARCHAR(15) UNIQUE,                                          -- Username
+    PASSWORD VARCHAR(50)                                                  -- Password
 )
