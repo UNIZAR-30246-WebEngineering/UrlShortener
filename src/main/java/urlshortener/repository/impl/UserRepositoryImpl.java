@@ -23,6 +23,9 @@ public class UserRepositoryImpl implements UserRepository {
   private static final RowMapper<User> rowMapper =
       (rs, rowNum) -> new User(rs.getString("username"), rs.getString("password"));
 
+  private static final RowMapper<Long> rowMapperId =
+          (rs, rowNum) -> rs.getLong(1);
+
   private final JdbcTemplate jdbc;
 
   public UserRepositoryImpl(JdbcTemplate jdbc) {
@@ -34,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
   public User save(User u) {
     try {
       jdbc.update("INSERT INTO user VALUES (?, ?,?)", null, u.getUsername(), u.getPassword());
-
+      u.setId(getId(u.getUsername()));
     } catch (DuplicateKeyException e) {
       log.debug("When insert for key {}", u.getUsername(), e);
       return null;
@@ -66,6 +69,16 @@ public class UserRepositoryImpl implements UserRepository {
       log.debug("When select for limit " + limit + " and offset "
           + offset, e);
       return Collections.emptyList();
+    }
+  }
+
+  @Override
+  public long getId(String username) {
+    try {
+      return jdbc.query("SELECT ID FROM user WHERE USERNAME = ?",
+              new Object[] {username}, rowMapperId).get(0);
+    } catch (Exception e) {
+      return -1;
     }
   }
 

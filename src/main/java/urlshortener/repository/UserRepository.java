@@ -12,4 +12,5 @@ public interface UserRepository {
 
   List<User> list(Long limit, Long offset);
 
+  long getId(String username);
 }

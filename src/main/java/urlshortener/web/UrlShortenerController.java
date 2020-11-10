@@ -58,8 +58,7 @@ public class UrlShortenerController {
     User u = userService.save(username, password);
 
     if (u != null) {
-
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(u.getId(), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
