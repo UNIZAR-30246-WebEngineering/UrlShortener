@@ -58,7 +58,9 @@ public class UrlShortenerController {
     User u = userService.save(username, password);
 
     if (u != null) {
-      return new ResponseEntity<>(u.getId(), HttpStatus.OK);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("uuid", u.getId());
+      return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -71,7 +73,9 @@ public class UrlShortenerController {
     User u = userService.login(username, password);
 
     if (u != null) {
-      return new ResponseEntity<>(u.getId(), HttpStatus.OK);
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("uuid", u.getId());
+      return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
@@ -88,6 +92,9 @@ public class UrlShortenerController {
       ShortURL su = shortUrlService.save(url, sponsor, userId, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
+
+
+
 
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
     } else {
