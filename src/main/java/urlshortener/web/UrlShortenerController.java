@@ -25,7 +25,7 @@ import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
-  public static final String HOST = "localhost";
+  public static final String HOST = "91.250.180.41";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;

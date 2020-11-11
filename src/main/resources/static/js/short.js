@@ -16,6 +16,10 @@ $(document).ready(function () {
             success: function (msg) {
                 msg.clicks = 0;
                 appendRow(msg);
+                $('html, body').animate({
+                    scrollTop: $("#about").offset().top
+                }, 2000);
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR.status)
@@ -52,7 +56,7 @@ $(document).ready(function () {
 
 function appendRow(msg){
     var markup = "<tr><td class=\"first-column\"><a href=http://" + msg.target+ ">" + msg.target +"</td>" +
-        "<td><a href=" + msg.uri + ">" +msg.uri + "</a></td><td class=\"last-column\">" +msg.clicks + "</td></tr>";
+        "<td><a href=" + msg.uri + ">" +msg.uri + "</td><td class=\"last-column\">" +msg.clicks + "</td></tr>";
     var tableBody = $("tbody");
     tableBody.append(markup);
     $("#feedback").empty();

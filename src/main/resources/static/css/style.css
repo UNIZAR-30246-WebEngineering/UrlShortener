@@ -1573,13 +1573,10 @@ h6 {
   color: red;
 }
 
-
-span {
-  cursor: pointer;
-}
 a {
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 span:hover a {
   color: red;
