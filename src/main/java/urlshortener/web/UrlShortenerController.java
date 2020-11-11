@@ -58,10 +58,10 @@ public class UrlShortenerController {
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
     if(username.equals("") || password.equals("")){
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    User u = userService.save(username, password);
 
+    User u = userService.save(username, password);
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
@@ -76,8 +76,11 @@ public class UrlShortenerController {
   public ResponseEntity<?> login(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
 
-    User u = userService.login(username, password);
+    if(username.equals("") || password.equals("")){
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
+    User u = userService.login(username, password);
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
@@ -94,7 +97,7 @@ public class UrlShortenerController {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if (urlValidator.isValid()) {
+    if (urlValidator.isValid() && userService.exists(userId)) {
       ShortURL su = shortUrlService.save(url, sponsor, userId, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());

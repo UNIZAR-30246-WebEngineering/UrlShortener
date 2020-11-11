@@ -30,4 +30,8 @@ public class UserService {
 
     return userRepository.login(u);
   }
+
+    public boolean exists(String userId) {
+      return userRepository.exists(userId);
+    }
 }
