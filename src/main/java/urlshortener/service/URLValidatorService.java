@@ -1,10 +1,7 @@
 package urlshortener.service;
 
 import org.apache.commons.validator.routines.UrlValidator;
-
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class URLValidatorService {

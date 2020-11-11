@@ -1,8 +1,5 @@
 package urlshortener.domain;
 
-import java.net.URI;
-import java.sql.Date;
-
 public class User {
 
   private long id;
