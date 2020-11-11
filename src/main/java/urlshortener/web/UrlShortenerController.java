@@ -24,7 +24,8 @@ import urlshortener.service.UserService;
 @RestController
 public class UrlShortenerController {
   public static final String HOST = "localhost";
-
+  private static final String STATUS_OK = "OK";
+  private static final String STATUS_ERROR = "ERROR";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
@@ -62,9 +63,10 @@ public class UrlShortenerController {
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
-      return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+      jsonObject = createJSONResponse(STATUS_OK, jsonObject);
+      return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.ACCEPTED);
     }
   }
 
@@ -77,14 +79,14 @@ public class UrlShortenerController {
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
-      return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+      return new ResponseEntity<>(createJSONResponse(STATUS_OK, jsonObject), HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.ACCEPTED);
     }
   }
 
   @RequestMapping(value = "/link", method = RequestMethod.POST)
-  public ResponseEntity<ShortURL> shortener(@RequestParam("url") String url,
+  public ResponseEntity<?> shortener(@RequestParam("url") String url,
                                             @RequestParam(value = "sponsor", required = false) String sponsor,
                                             @RequestParam("uuid") String userId,
                                             HttpServletRequest request) {
@@ -97,7 +99,7 @@ public class UrlShortenerController {
 
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -106,12 +108,23 @@ public class UrlShortenerController {
                                                  HttpServletRequest request) {
 
     JSONObject urlShort = shortUrlService.findByUser(userId);
-    return new ResponseEntity<>(urlShort, HttpStatus.CREATED);
+    JSONObject jsonResponse = createJSONResponse(STATUS_OK, urlShort);
+    return new ResponseEntity<>(jsonResponse, HttpStatus.CREATED);
 
   }
 
   private String extractIP(HttpServletRequest request) {
     return request.getRemoteAddr();
+  }
+
+  private JSONObject createJSONResponse(String status, JSONObject jo) {
+    JSONObject jsonResponse = new JSONObject();
+    jsonResponse.put("status", status);
+    if (jo != null) {
+      jsonResponse.merge(jo);
+    }
+
+    return jsonResponse;
   }
 
   private ResponseEntity<?> createSuccessfulRedirectToResponse(ShortURL l) {
