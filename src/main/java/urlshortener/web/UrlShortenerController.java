@@ -23,6 +23,8 @@ import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
+  public static final String HOST = "localhost";
+
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
@@ -92,9 +94,6 @@ public class UrlShortenerController {
       ShortURL su = shortUrlService.save(url, sponsor, userId, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
-
-
-
 
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
     } else {
