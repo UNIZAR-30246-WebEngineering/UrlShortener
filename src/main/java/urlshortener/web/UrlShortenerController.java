@@ -58,7 +58,7 @@ public class UrlShortenerController {
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
     if(username.equals("") || password.equals("")){
-      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.BAD_REQUEST);
     }
 
     User u = userService.save(username, password);
@@ -68,7 +68,7 @@ public class UrlShortenerController {
       jsonObject = createJSONResponse(STATUS_OK, jsonObject);
       return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.ACCEPTED);
+      return new ResponseEntity<>(createJSONResponse(STATUS_ERROR, null), HttpStatus.BAD_REQUEST);
     }
   }
 
