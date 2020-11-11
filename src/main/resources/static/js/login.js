@@ -11,7 +11,7 @@ $(document).ready(function () {
         container.removeClass("right-panel-active");
     });
 
-    $("#login-form").submit(function () {
+    $("#login-button").click(function () {
         console.log("Entro al form de login");
         container.removeClass("right-panel-active");
          $.ajax({
@@ -20,8 +20,8 @@ $(document).ready(function () {
             data: {username: $("#login-username").val(), password: $("#login-password").val()},
             success: function (msg) {
                document.cookie = "uuid=" + msg.uuid;
-               console.log("entro al succes de login ");
-               window.location.replace("https://localhost:8080/index1.html")
+               console.log("entro al success de login ");
+               window.location.replace("http://localhost:8080/index.html")
             },
             error: function (msg) {
                 console.log("Error de login");
@@ -31,13 +31,13 @@ $(document).ready(function () {
     });
 
     $("#register").click(function (){
-        alert("ENTROOO");
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/register",
             data: {username: $("#register-username").val(), password: $("#register-password").val()},
             success: function (msg) {
                document.cookie = "uuid=" + msg.uuid;
+               window.location.replace("http://localhost:8080/index.html")
             },
             error: function (msg) {
                 alert("MAL");

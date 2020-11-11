@@ -1,20 +1,23 @@
+
+
 var lines = [];
 var num_pending_request = 10;
 var num_processed_lines = 0;
 var retval = "";
 
 $(document).ready(function () {
+    getData();
     $(".btn-get-started").click(function () {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/link",
-            data: {url: $("#id-url-input").val()},
+            data: {url: $("#id-url-input").val(), uuid: getCookie("uuid")},
             success: function (msg) {
-                appendRow();
-
+                msg.click = 0;
+                appendRow(msg);
             },
             error: function (msg) {
-                feedbackDiv = $("#feedback");
+                var feedbackDiv = $("#feedback");
                 feedbackDiv.empty();
                 feedbackDiv.html("No se puede recortar esa url");
             }
@@ -47,20 +50,19 @@ $(document).ready(function () {
 });
 
 function appendRow(msg){
-    markup = "<tr><td class=\"first-column\"><a href=" + msg.target+ ">" + msg.target +"</a></td>" +
-        "<td><a href=" + msg.uri + ">" +msg.uri + "</a></td><td class=\"last-column\">0</td></tr>";
-    tableBody = $("tbody");
+    var markup = "<tr><td class=\"first-column\"><a href=" + msg.target+ ">" + msg.target +"</a></td>" +
+        "<td><a href=" + msg.uri + ">" +msg.uri + "</a></td><td class=\"last-column\">" +msg.click + "</td></tr>";
+    var tableBody = $("tbody");
     tableBody.append(markup);
     $("#feedback").empty();
 }
 
 
 function getShortURL() {
-
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/link",
-        data: {url: lines[num_processed_lines]},
+        data: {url: lines[num_processed_lines] , uuid: getCookie("uuid")},
         success: function (msg) {
             num_processed_lines ++;
             console.log(num_processed_lines + "  " + msg.uri);
@@ -99,3 +101,22 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 
+function getData(){
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/userlinks",
+        data: {uuid:getCookie("uuid")},
+        success: function (msg) {
+            alert(JSON.stringify(msg));
+            links = msg.urlList;
+            for(var i = 0; i < links.length; i ++){
+                appendRow(links[i]);
+                console.log(links[i].uri);
+            }
+        },
+        error: function (msg) {
+            alert("MAL");
+        }
+    });
+}

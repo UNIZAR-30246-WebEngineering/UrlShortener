@@ -61,7 +61,7 @@
         if ($(this).parents('.main-nav, .mobile-nav').length) {
           $('.main-nav .active, .mobile-nav .active').removeClass('active');
           $(this).closest('li').addClass('active');
-        }
+        }zzz
 
         if ($('body').hasClass('mobile-nav-active')) {
           $('body').removeClass('mobile-nav-active');
