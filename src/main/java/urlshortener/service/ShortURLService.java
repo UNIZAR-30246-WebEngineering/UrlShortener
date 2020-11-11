@@ -27,7 +27,6 @@ public class ShortURLService {
   }
 
   public JSONObject findByUser(String userId) {
-    List<ShortURL> test = shortURLRepository.findByUser(userId);
 
      return toJson(shortURLRepository.findByUser(userId));
   }
@@ -41,8 +40,8 @@ public class ShortURLService {
       for (ShortURL su : shortList)
       {
         JSONObject shortJSON = new JSONObject();
-        shortJSON.put("hash", su.getHash());
-        shortJSON.put("uri", su.getTarget());
+        shortJSON.put( "uri", UrlShortenerController.HOST + "/" + su.getHash());
+        shortJSON.put("target", su.getTarget());
         shortJSON.put("clicks", su.getClicks());
         jArray.add(shortJSON);
       }
