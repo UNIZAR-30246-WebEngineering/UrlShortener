@@ -102,7 +102,7 @@ public class UrlShortenerController {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     if (urlValidator.isValid()) {
@@ -119,7 +119,7 @@ public class UrlShortenerController {
   public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
                                                  HttpServletRequest request) {
 
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     JSONObject urlShort = shortUrlService.findByUser(userId);
