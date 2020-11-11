@@ -22,7 +22,7 @@ import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
-  public static final String HOST = "localhost";
+  public static final String HOST = "localhost:8080";
   private static final String STATUS_OK = "OK";
   private static final String STATUS_ERROR = "ERROR";
   private final ShortURLService shortUrlService;
@@ -146,7 +146,7 @@ public class UrlShortenerController {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     if (urlValidator.isValid()) {
@@ -177,7 +177,7 @@ public class UrlShortenerController {
   public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
                                                  HttpServletRequest request) {
 
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     JSONObject urlShort = shortUrlService.findByUser(userId);

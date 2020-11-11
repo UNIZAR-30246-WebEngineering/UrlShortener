@@ -1,4 +1,4 @@
-const URL_SERVER="http://91.250.180.41:8080";
+const URL_SERVER="http://localhost:8080";
 (function ($) {
   "use strict";
 
