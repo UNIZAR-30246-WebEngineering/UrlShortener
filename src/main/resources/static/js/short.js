@@ -13,10 +13,11 @@ $(document).ready(function () {
             url: "http://localhost:8080/link",
             data: {url: $("#id-url-input").val(), uuid: getCookie("uuid")},
             success: function (msg) {
-                msg.click = 0;
+                msg.clicks = 0;
                 appendRow(msg);
             },
-            error: function (msg) {
+            error: function (msg, textStatus, xhr) {
+                console.log(xhr.status)
                 var feedbackDiv = $("#feedback");
                 feedbackDiv.empty();
                 feedbackDiv.html("No se puede recortar esa url");
@@ -50,8 +51,8 @@ $(document).ready(function () {
 });
 
 function appendRow(msg){
-    var markup = "<tr><td class=\"first-column\"><a href=" + msg.target+ ">" + msg.target +"</a></td>" +
-        "<td><a href=" + msg.uri + ">" +msg.uri + "</a></td><td class=\"last-column\">" +msg.click + "</td></tr>";
+    var markup = "<tr><td class=\"first-column\"><a href=http://" + msg.target+ ">" + msg.target +"</td>" +
+        "<td><a href=" + msg.uri + ">" +msg.uri + "</a></td><td class=\"last-column\">" +msg.clicks + "</td></tr>";
     var tableBody = $("tbody");
     tableBody.append(markup);
     $("#feedback").empty();
@@ -67,6 +68,7 @@ function getShortURL() {
             num_processed_lines ++;
             console.log(num_processed_lines + "  " + msg.uri);
             retval += msg.uri + "\n";
+            msg.clicks = 0;
             appendRow(msg);
             if (num_processed_lines < lines.length) {
                 getShortURL();
@@ -108,7 +110,6 @@ function getData(){
         url: "http://localhost:8080/userlinks",
         data: {uuid:getCookie("uuid")},
         success: function (msg) {
-            alert(JSON.stringify(msg));
             links = msg.urlList;
             for(var i = 0; i < links.length; i ++){
                 appendRow(links[i]);
