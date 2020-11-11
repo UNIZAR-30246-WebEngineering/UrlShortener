@@ -93,5 +93,12 @@ public class UserRepositoryImpl implements UserRepository {
     return listUsers.get(0);
   }
 
+  @Override
+  public boolean exists(String userId) {
+    List<User> listUsers =  jdbc.query("SELECT * FROM USER WHERE ID = ?",
+            new Object[] {userId}, rowMapper);
+    return listUsers.size() > 0;
+  }
+
 
 }

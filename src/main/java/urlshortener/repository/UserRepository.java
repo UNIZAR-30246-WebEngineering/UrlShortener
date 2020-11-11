@@ -15,4 +15,6 @@ public interface UserRepository {
   long getId(String username);
 
   User login(User u);
+
+  boolean exists(String userId);
 }

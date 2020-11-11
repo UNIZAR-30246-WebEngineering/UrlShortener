@@ -3,7 +3,6 @@ package urlshortener.service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
