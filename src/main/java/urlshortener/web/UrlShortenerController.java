@@ -42,7 +42,7 @@ public class UrlShortenerController {
     if(shortUrlService.isExpired(id)) {
       ShortURL l = shortUrlService.findByKey(id);
       shortUrlService.delete(l.getHash());
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     } else {
       ShortURL l = shortUrlService.findByKey(id);
       if (l != null) {
@@ -57,7 +57,9 @@ public class UrlShortenerController {
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
-
+    if(username.equals("") || password.equals("")){
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     User u = userService.save(username, password);
 
     if (u != null) {
