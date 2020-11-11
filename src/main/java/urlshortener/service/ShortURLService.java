@@ -39,7 +39,7 @@ public class ShortURLService {
       for (ShortURL su : shortList)
       {
         JSONObject shortJSON = new JSONObject();
-        shortJSON.put( "uri", UrlShortenerController.HOST + "/" + su.getHash());
+        shortJSON.put( "uri", "http://" + UrlShortenerController.HOST + "/" + su.getHash());
         shortJSON.put("target", su.getTarget());
         shortJSON.put("clicks", su.getClicks());
         jArray.add(shortJSON);

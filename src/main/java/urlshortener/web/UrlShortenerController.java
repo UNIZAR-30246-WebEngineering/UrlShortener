@@ -5,9 +5,6 @@ import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 
 import net.minidev.json.JSONObject;
-import org.apache.commons.validator.routines.UrlValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +22,29 @@ import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
-  public static final String HOST = "91.250.180.41";
+  public static final String HOST = "localhost";
+  private static final String STATUS_OK = "OK";
+  private static final String STATUS_ERROR = "ERROR";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
-
-  private static final Logger log = LoggerFactory
-          .getLogger(ClickService.class);
 
   public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService, UserService userService) {
     this.shortUrlService = shortUrlService;
     this.clickService = clickService;
     this.userService = userService;
   }
+
+  /**
+   * @api {get} /{id:(?!link|index).*} Shortened url
+   * @apiName RedirectTo
+   * @apiGroup ShortUrl
+   *
+   * @apiParam {Hash} id Shortened url unique ID.
+   *
+   * @apiSuccess OK Url Redirect.
+   * @apiError UrlNotFound The url was not found.
+   */
 
   @RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
   public ResponseEntity<?> redirectTo(@PathVariable String id,
@@ -57,13 +64,22 @@ public class UrlShortenerController {
     }
   }
 
+  /**
+   * @api {post} /register User register
+   * @apiName User register
+   * @apiGroup User
+   *
+   * @apiParam {String} username Username.
+   * @apiParam {String} password Password.
+   *
+   * @apiSuccess OK User registered successfully.
+   * @apiError  400 Bad user parameters.
+   * @apiError 226 Username already exists.
+   */
+
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
-    log.debug("------------------------------------------");
-    log.debug(username);
-    log.debug(password);
-    log.debug("------------------------------------------");
     if(username.equals("") || password.equals("")){
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -72,11 +88,25 @@ public class UrlShortenerController {
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
+      jsonObject = createJSONResponse(STATUS_OK, jsonObject);
       return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.IM_USED);
     }
   }
+
+  /**
+   * @api {post} /login User login
+   * @apiName User login
+   * @apiGroup User
+   *
+   * @apiParam {String} username Username.
+   * @apiParam {String} password Password.
+   *
+   * @apiSuccess 202 User login successful.
+   * @apiError  400 Bad user parameters.
+   * @apiError 203 Wrong user or password.
+   */
 
   @RequestMapping(value = "/login", method = RequestMethod.POST)
   public ResponseEntity<?> login(@RequestParam("username") String username,
@@ -95,6 +125,20 @@ public class UrlShortenerController {
     }
   }
 
+  /**
+   * @api {post} /link Create short link
+   * @apiName Create short link
+   * @apiGroup ShortURL
+   *
+   * @apiParam {String} url URL you want to short.
+   * @apiParam {String} sponsor="sponsor" Sponsor.
+   * @apiParam {String} uuid User Id.
+   *
+   * @apiSuccess 201 Link generated successfully.
+   * @apiError  401 User does not exists.
+   * @apiError 400 Invalid or unreachable URL.
+   */
+
   @RequestMapping(value = "/link", method = RequestMethod.POST)
   public ResponseEntity<?> shortener(@RequestParam("url") String url,
                                             @RequestParam(value = "sponsor", required = false) String sponsor,
@@ -102,7 +146,7 @@ public class UrlShortenerController {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if(!userService.exists(userId)){
+    if(userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     if (urlValidator.isValid()) {
@@ -115,11 +159,25 @@ public class UrlShortenerController {
     }
   }
 
+  /**
+   * @api {post} /link Create short link
+   * @apiName Create short link
+   * @apiGroup ShortURL
+   *
+   * @apiParam {String} url URL you want to short.
+   * @apiParam {String} sponsor="sponsor" Sponsor.
+   * @apiParam {String} uuid User Id.
+   *
+   * @apiSuccess 201 Link generated successfully.
+   * @apiError  401 User does not exists.
+   * @apiError 400 Invalid or unreachable URL.
+   */
+
   @RequestMapping(value = "/userlinks", method = RequestMethod.POST)
   public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
                                                  HttpServletRequest request) {
 
-    if(!userService.exists(userId)){
+    if(userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     JSONObject urlShort = shortUrlService.findByUser(userId);
