@@ -15,6 +15,9 @@ import urlshortener.domain.ShortURL;
 import urlshortener.service.ClickService;
 import urlshortener.service.ShortURLService;
 
+
+import org.springframework.web.multipart.MultipartFile;
+
 @RestController
 public class UrlShortenerController {
   private final ShortURLService shortUrlService;
@@ -52,6 +55,22 @@ public class UrlShortenerController {
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  // CSV function
+  @RequestMapping(value = "/csv", method = RequestMethod.POST)
+  public ResponseEntity<ShortURL> shortenerWithCSV(@RequestParam("file") MultipartFile file,
+                                            @RequestParam(value = "sponsor", required = false)
+                                                String sponsor,
+                                            HttpServletRequest request) {
+                                              
+    System.out.println("En funcion csv");
+    // validate file
+    if (file.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } else {
+      return new ResponseEntity<>(HttpStatus.CREATED);
     }
   }
 
