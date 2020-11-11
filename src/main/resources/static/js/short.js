@@ -6,21 +6,22 @@ var num_processed_lines = 0;
 var retval = "";
 
 $(document).ready(function () {
+    $("#username-header").html(getCookie("username"));
     getData();
     $(".btn-get-started").click(function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/link",
+            url: URL_SERVER + "/link",
             data: {url: $("#id-url-input").val(), uuid: getCookie("uuid")},
             success: function (msg) {
                 msg.clicks = 0;
                 appendRow(msg);
             },
-            error: function (msg, textStatus, xhr) {
-                console.log(xhr.status)
-                var feedbackDiv = $("#feedback");
-                feedbackDiv.empty();
-                feedbackDiv.html("No se puede recortar esa url");
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.status)
+                if (jqXHR.status === 400) {
+                    $("#feedback").html("No se puede recortar esa url");
+                }
             }
         });
     });
@@ -35,14 +36,13 @@ $(document).ready(function () {
     $("#upload").change(function(e) {
         var ext = $("#upload").val().split(".").pop().toLowerCase();
         if($.inArray(ext, ["csv"]) == -1) {
-            alert('Upload CSV');
             return false;
         }
         if (e.target.files != undefined) {
             var reader = new FileReader();
             reader.onload = function(e) {
                 lines = e.target.result.split('\n');
-                getShortURL();
+                getShortURLFromCSV();
             };
             reader.readAsText(e.target.files.item(0));
         }
@@ -59,33 +59,34 @@ function appendRow(msg){
 }
 
 
-function getShortURL() {
+function getShortURLFromCSV() {
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/link",
+        url: URL_SERVER + "/link",
         data: {url: lines[num_processed_lines] , uuid: getCookie("uuid")},
         success: function (msg) {
             num_processed_lines ++;
             console.log(num_processed_lines + "  " + msg.uri);
-            retval += msg.uri + "\n";
+            retval += msg.target + ";" + msg.uri + ";0\n";
             msg.clicks = 0;
             appendRow(msg);
             if (num_processed_lines < lines.length) {
-                getShortURL();
+                getShortURLFromCSV();
             }else{
                 download("result.csv", retval);
             }
 
 
         },
-        error: function (msg) {
-            num_processed_lines ++;
-            console.log(num_processed_lines + "  ERROR   ");
+        error: function (jqXHR, textStatus, errorThrown) {
             if (num_processed_lines < lines.length) {
-                getShortURL();
-            }else{
+                retval += lines[num_processed_lines] + ";web no recortable;;\n";
+                num_processed_lines++;
+                getShortURLFromCSV();
+            } else {
                 download("result.csv", retval);
             }
+
         }
     });
 }
@@ -104,10 +105,9 @@ function download(filename, text) {
 }
 
 function getData(){
-
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/userlinks",
+        url: URL_SERVER + "/userlinks",
         data: {uuid:getCookie("uuid")},
         success: function (msg) {
             links = msg.urlList;
@@ -116,8 +116,8 @@ function getData(){
                 console.log(links[i].uri);
             }
         },
-        error: function (msg) {
-            alert("MAL");
+        error: function (jqXHR, textStatus, errorThrown) {
+            window.location.replace(URL_SERVER + "/index.html")
         }
     });
 }

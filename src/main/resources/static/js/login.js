@@ -16,13 +16,13 @@ $(document).ready(function () {
             container.removeClass("right-panel-active");
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8080/login",
+                url: URL_SERVER + "/login",
                 data: {username: $("#login-username").val(), password: $("#login-password").val()},
                 success: function (msg, statusText, xhr) {
                     if (xhr.status === 202) {
                         document.cookie = "uuid=" + msg.uuid;
                         console.log("entro al success de login ");
-                        window.location.replace("http://localhost:8080/index2.html")
+                        window.location.replace(URL_SERVER + "/index2.html")
                     } else {
                         var feedbackDiv = $("#login-feedback");
                         feedbackDiv.empty();
@@ -45,12 +45,13 @@ $(document).ready(function () {
         if(validateRegisterFields($("#register-username"), $("#register-password"), $("#register-confirm-password"))){
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8080/register",
+                url: URL_SERVER + "/register",
                 data: {username: $("#register-username").val(), password: $("#register-password").val()},
                 success: function (msg, statusText, xhr) {
                     if (xhr.status === 201) {
                         document.cookie = "uuid=" + msg.uuid;
-                        window.location.replace("http://localhost:8080/index2.html")
+                        document.cookie = "username=" + $("#register-username").val();
+                        window.location.replace(URL_SERVER + "/index2.html")
                     }else if (xhr.status === 226){
                         var feedbackDiv = $("#register-feedback");
                         feedbackDiv.empty();
