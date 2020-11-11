@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.minidev.json.JSONObject;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +26,12 @@ import urlshortener.service.UserService;
 @RestController
 public class UrlShortenerController {
   public static final String HOST = "localhost";
-  private static final String STATUS_OK = "OK";
-  private static final String STATUS_ERROR = "ERROR";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
+
+  private static final Logger log = LoggerFactory
+          .getLogger(ClickService.class);
 
   public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService, UserService userService) {
     this.shortUrlService = shortUrlService;
@@ -57,6 +60,10 @@ public class UrlShortenerController {
   @RequestMapping(value = "/register", method = RequestMethod.POST)
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
+    log.debug("------------------------------------------");
+    log.debug(username);
+    log.debug(password);
+    log.debug("------------------------------------------");
     if(username.equals("") || password.equals("")){
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -65,7 +72,6 @@ public class UrlShortenerController {
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
-      jsonObject = createJSONResponse(STATUS_OK, jsonObject);
       return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.IM_USED);

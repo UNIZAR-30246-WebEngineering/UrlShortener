@@ -17,17 +17,20 @@ import java.net.URI;
 import java.sql.Date;
 import java.util.Calendar;
 
+import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import urlshortener.domain.ShortURL;
 import urlshortener.service.ClickService;
 import urlshortener.service.ShortURLService;
+import urlshortener.service.UserService;
 
 public class UrlShortenerTests {
 
@@ -39,6 +42,9 @@ public class UrlShortenerTests {
   @Mock
   private ShortURLService shortUrlService;
 
+  @Mock
+  private UserService userService;
+
   @InjectMocks
   private UrlShortenerController urlShortener;
 
@@ -46,6 +52,16 @@ public class UrlShortenerTests {
   public void setup() {
     MockitoAnnotations.initMocks(this);
     this.mockMvc = MockMvcBuilders.standaloneSetup(urlShortener).build();
+  }
+
+  @Test
+  public void thatRegisterIsCorrect() throws Exception {
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("username", "testUser");
+    jsonObject.put("password", "IamAtestUser");
+
+    mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).
+            content(jsonObject.toJSONString())).andExpect(status().isCreated());
   }
 
   @Test
