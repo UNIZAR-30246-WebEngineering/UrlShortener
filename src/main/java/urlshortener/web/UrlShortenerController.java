@@ -23,8 +23,6 @@ import urlshortener.service.UserService;
 @RestController
 public class UrlShortenerController {
   public static final String HOST = "localhost";
-  private static final String STATUS_OK = "OK";
-  private static final String STATUS_ERROR = "ERROR";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
@@ -83,12 +81,14 @@ public class UrlShortenerController {
     if(username.equals("") || password.equals("")){
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+    System.out.println("Username: " + username + " Password: " + password);
 
     User u = userService.save(username, password);
+
+    System.out.println("Test: " + u.getPassword());
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
-      jsonObject = createJSONResponse(STATUS_OK, jsonObject);
       return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.IM_USED);
@@ -146,7 +146,7 @@ public class UrlShortenerController {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     if (urlValidator.isValid()) {
@@ -174,10 +174,10 @@ public class UrlShortenerController {
    */
 
   @RequestMapping(value = "/userlinks", method = RequestMethod.POST)
-  public ResponseEntity<JSONObject> getUserLinks(@RequestParam("uuid") String userId,
+  public ResponseEntity<?> getUserLinks(@RequestParam("uuid") String userId,
                                                  HttpServletRequest request) {
 
-    if(userService.exists(userId)){
+    if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
     JSONObject urlShort = shortUrlService.findByUser(userId);
