@@ -17,7 +17,6 @@ import java.net.URI;
 import java.sql.Date;
 import java.util.Calendar;
 
-import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -28,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import urlshortener.domain.ShortURL;
+import urlshortener.domain.User;
 import urlshortener.service.ClickService;
 import urlshortener.service.ShortURLService;
 import urlshortener.service.UserService;
@@ -55,14 +55,48 @@ public class UrlShortenerTests {
   }
 
   @Test
-  public void thatRegisterIsCorrect() throws Exception {
-    JSONObject jsonObject = new JSONObject();
-    jsonObject.put("username", "testUser");
-    jsonObject.put("password", "IamAtestUser");
+  public void thatRegisterIsSuccessful() throws Exception {
+    configureUserSave("testUserxxx", "testPassword");
 
-    mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).
-            content(jsonObject.toJSONString())).andExpect(status().isCreated());
+    mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON)
+            .param("username","testUserxxx")
+            .param("password","testPassword"))
+            .andDo(print())
+            .andExpect(status().isCreated());
   }
+
+
+  @Test
+  public void thatShortenerCreatesARedirectIfTheURLisOK() throws Exception {
+    configureUrlSave(null);
+
+    mockMvc.perform(post("/link")
+            .param("url", "http://example.com/")
+            .param("uuid","0"))
+            .andDo(print())
+            .andExpect(redirectedUrl("http://localhost/f684a3c4"))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.hash", is("f684a3c4")))
+            .andExpect(jsonPath("$.uri", is("http://localhost/f684a3c4")))
+            .andExpect(jsonPath("$.target", is("http://example.com/")))
+            .andExpect(jsonPath("$.sponsor", is(nullValue())));
+  }
+
+  @Test
+  public void thatShortenerCreatesARedirectIfTheURLisOK2() throws Exception {
+    configureUrlSave(null);
+
+    mockMvc.perform(post("/link")
+            .param("url", "http://example.com/"))
+            .andDo(print())
+            .andExpect(redirectedUrl("http://localhost/f684a3c4"))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.hash", is("f684a3c4")))
+            .andExpect(jsonPath("$.uri", is("http://localhost/f684a3c4")))
+            .andExpect(jsonPath("$.target", is("http://example.com/")))
+            .andExpect(jsonPath("$.sponsor", is(nullValue())));
+  }
+
 
   @Test
   public void thatRedirectToReturnsTemporaryRedirectIfKeyExists()
@@ -83,27 +117,15 @@ public class UrlShortenerTests {
         .andExpect(status().isNotFound());
   }
 
-  @Test
-  public void thatShortenerCreatesARedirectIfTheURLisOK() throws Exception {
-    configureSave(null);
 
-    mockMvc.perform(post("/link").param("url", "http://example.com/"))
-        .andDo(print())
-        .andExpect(redirectedUrl("http://localhost/f684a3c4"))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.hash", is("f684a3c4")))
-        .andExpect(jsonPath("$.uri", is("http://localhost/f684a3c4")))
-        .andExpect(jsonPath("$.target", is("http://example.com/")))
-        .andExpect(jsonPath("$.sponsor", is(nullValue())));
-  }
 
   @Test
   public void thatShortenerCreatesARedirectWithSponsor() throws Exception {
-    configureSave("http://sponsor.com/");
+    configureUrlSave("http://sponsor.com/");
 
     mockMvc.perform(
         post("/link").param("url", "http://example.com/").param(
-            "sponsor", "http://sponsor.com/")).andDo(print())
+            "sponsor", "http://sponsor.com/").param("uuid","0")).andDo(print())
         .andExpect(redirectedUrl("http://localhost/f684a3c4"))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.hash", is("f684a3c4")))
@@ -114,7 +136,7 @@ public class UrlShortenerTests {
 
   @Test
   public void thatShortenerFailsIfTheURLisWrong() throws Exception {
-    configureSave(null);
+    configureUrlSave(null);
 
     mockMvc.perform(post("/link").param("url", "someKey")).andDo(print())
         .andExpect(status().isBadRequest());
@@ -129,7 +151,7 @@ public class UrlShortenerTests {
         .andExpect(status().isBadRequest());
   }
 
-  private void configureSave(String sponsor) {
+  private void configureUrlSave(String sponsor) {
     when(shortUrlService.save(any(),  any(), any(), any()))
         .then((Answer<ShortURL>) invocation -> new ShortURL(
             "f684a3c4",
@@ -144,6 +166,12 @@ public class UrlShortenerTests {
             null,
             null));
   }
+
+  private void configureUserSave(String username, String password) {
+    when(userService.save(any(),  any()))
+            .then((Answer<User>) invocation -> new User(username, password));
+  }
+
 
   private Date getExpirationDate() {
     Calendar calendar = Calendar.getInstance();
