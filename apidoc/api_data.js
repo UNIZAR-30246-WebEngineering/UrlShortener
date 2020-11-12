@@ -70,8 +70,8 @@ define({ "api": [
   {
     "type": "post",
     "url": "/link",
-    "title": "Create short link",
-    "name": "Create_short_link",
+    "title": "Get user links",
+    "name": "Get_user_links",
     "group": "ShortURL",
     "parameter": {
       "fields": {
@@ -140,7 +140,7 @@ define({ "api": [
     "url": "/{id:(?!link|index).*}",
     "title": "Shortened url",
     "name": "RedirectTo",
-    "group": "ShortUrl",
+    "group": "ShortURL",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -180,7 +180,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "src/main/java/urlshortener/web/UrlShortenerController.java",
-    "groupTitle": "ShortUrl"
+    "groupTitle": "ShortURL"
   },
   {
     "type": "post",
