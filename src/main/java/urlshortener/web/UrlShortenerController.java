@@ -22,7 +22,10 @@ import urlshortener.service.UserService;
 
 @RestController
 public class UrlShortenerController {
-  public static final String HOST = "localhost";
+  public static final String HOST = "localhost:8080";
+  private static final String STATUS_OK = "OK";
+  private static final String STATUS_ERROR = "ERROR";
+  //public static final String HOST = "localhost";
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
@@ -36,7 +39,7 @@ public class UrlShortenerController {
   /**
    * @api {get} /{id:(?!link|index).*} Shortened url
    * @apiName RedirectTo
-   * @apiGroup ShortUrl
+   * @apiGroup ShortURL
    *
    * @apiParam {Hash} id Shortened url unique ID.
    *
@@ -89,6 +92,7 @@ public class UrlShortenerController {
     if (u != null) {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("uuid", u.getId());
+      jsonObject = createJSONResponse(STATUS_OK, jsonObject);
       return new ResponseEntity<>(jsonObject, HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>(HttpStatus.IM_USED);
@@ -160,8 +164,8 @@ public class UrlShortenerController {
   }
 
   /**
-   * @api {post} /link Create short link
-   * @apiName Create short link
+   * @api {post} /link Get user links
+   * @apiName Get user links
    * @apiGroup ShortURL
    *
    * @apiParam {String} url URL you want to short.
