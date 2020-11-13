@@ -1,8 +1,10 @@
 package urlshortener.web;
 
 import java.net.URI;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import urlshortener.domain.ShortURL;
 import urlshortener.domain.User;
 import urlshortener.service.ClickService;
@@ -21,7 +25,7 @@ import urlshortener.service.URLValidatorService;
 import urlshortener.service.UserService;
 
 @RestController
-public class UrlShortenerController {
+public class UrlShortenerController implements WebMvcConfigurer {
   public static final String HOST = "localhost:8080";
   private static final String STATUS_OK = "OK";
   private static final String STATUS_ERROR = "ERROR";
@@ -36,6 +40,12 @@ public class UrlShortenerController {
     this.userService = userService;
   }
 
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/static/**")
+            .addResourceLocations("classpath:/static");
+  }
+
   /**
    * @api {get} /{id:(?!link|index).*} Shortened url
    * @apiName RedirectTo
@@ -47,7 +57,7 @@ public class UrlShortenerController {
    * @apiError UrlNotFound The url was not found.
    */
 
-  @RequestMapping(value = "/{id:(?!link|index).*}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{id:(?!link|api|index|login|panel).*}", method = RequestMethod.GET)
   public ResponseEntity<?> redirectTo(@PathVariable String id,
                                       HttpServletRequest request) {
     if(shortUrlService.isExpired(id)) {
@@ -188,6 +198,7 @@ public class UrlShortenerController {
     return new ResponseEntity<>(urlShort, HttpStatus.OK);
 
   }
+
 
   private String extractIP(HttpServletRequest request) {
     return request.getRemoteAddr();
