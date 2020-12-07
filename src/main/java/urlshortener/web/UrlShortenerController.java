@@ -10,11 +10,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import urlshortener.domain.ShortURL;
@@ -88,7 +84,7 @@ public class UrlShortenerController implements WebMvcConfigurer {
    * @apiError 226 Username already exists.
    */
 
-  @RequestMapping(value = "/register", method = RequestMethod.POST)
+  @RequestMapping(value = "/signup", method = RequestMethod.POST)
   public ResponseEntity<?> register(@RequestParam("username") String username,
                                     @RequestParam("password") String password) {
     if(username.equals("") || password.equals("")){
@@ -199,6 +195,38 @@ public class UrlShortenerController implements WebMvcConfigurer {
 
   }
 
+  /**
+   * @api {get} /users-information Get users information
+   * @apiName Get user intormation
+   * @apiGroup User
+   *
+   * @apiSuccess 201 Link generated successfully.
+   * @apiError  401 User does not exists.
+   * @apiError 400 Invalid or unreachable URL.
+   */
+
+  @RequestMapping(value = "/users-information", method = RequestMethod.GET)
+  public ResponseEntity<?> getUsers() {
+    return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+  }
+
+  /**
+   * @api {get} /user/{id} Delete a user
+   * @apiName Delete a user
+   * @apiGroup User
+   *
+   * @apiSuccess 201 User deleted successfully.
+   * @apiError  401 User does not exists.
+   * @apiError 400 Invalid or unreachable URL.
+   */
+
+  @DeleteMapping(value = "/user/{id}")
+  public ResponseEntity<?> deleteUser(@PathVariable int id) {
+    if (userService.deleteUser(id)){
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 
   private String extractIP(HttpServletRequest request) {
     return request.getRemoteAddr();

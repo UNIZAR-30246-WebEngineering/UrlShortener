@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import urlshortener.domain.User;
 import urlshortener.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -34,4 +36,12 @@ public class UserService {
     public boolean exists(String userId) {
       return userRepository.exists(userId);
     }
+
+    public List<User> getUsers() {
+      return userRepository.getUsers();
+    }
+
+  public boolean deleteUser(int userId) {
+    return userRepository.deleteById(userId);
+  }
 }
