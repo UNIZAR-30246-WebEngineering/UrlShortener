@@ -1,5 +1,3 @@
-
-
 var lines = [];
 var num_pending_request = 10;
 var num_processed_lines = 0;
@@ -55,8 +53,14 @@ $(document).ready(function () {
 });
 
 function appendRow(msg){
-    var markup = "<tr><td class=\"first-column\"><a href=http://" + msg.target+ ">" + msg.target +"</td>" +
+    var markup
+    if(msg.valid === "undefined"){
+        markup = "<tr><td class=\"first-column\"><a href=http://" + msg.target+ ">" + msg.target +"</td>" +
         "<td><a href=" + msg.uri + ">" +msg.uri + "</td><td class=\"last-column\">" +msg.clicks + "</td></tr>";
+    }else{
+        markup = "<tr><td class=\"first-column\"><a href=http://" + msg.target+ ">" + msg.target +"</td>" +
+            "<td>" + msg.uri + "</td><td class=\"last-column\">" +msg.clicks + "</td></tr>";
+    }
     var tableBody = $("tbody");
     tableBody.append(markup);
     $("#feedback").empty();

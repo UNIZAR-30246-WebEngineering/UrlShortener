@@ -53,14 +53,16 @@ public class UrlShortenerController implements WebMvcConfigurer {
    * @apiError UrlNotFound The url was not found.
    */
 
-  @RequestMapping(value = "/{id:(?!link|api|index|login|panel).*}", method = RequestMethod.GET)
+  @GetMapping(value = "/{id:(?!link|api|index|login|panel).*}")
   public ResponseEntity<?> redirectTo(@PathVariable String id,
                                       HttpServletRequest request) {
     if(shortUrlService.isExpired(id)) {
       ShortURL l = shortUrlService.findByKey(id);
       shortUrlService.delete(l.getHash());
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    } else {
+    } else if (!shortUrlService.isValidated(id)) {
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }else{
       ShortURL l = shortUrlService.findByKey(id);
       if (l != null) {
         clickService.saveClick(id, extractIP(request));
@@ -159,14 +161,16 @@ public class UrlShortenerController implements WebMvcConfigurer {
     if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    if (urlValidator.isValid()) {
+    /*TODO INSERT CODE TO QUEQE THE VALIDATION TASKS
+      if (urlValidator.isValid()) {
+      } else {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      }*/
       ShortURL su = shortUrlService.save(url, sponsor, userId, request.getRemoteAddr());
       HttpHeaders h = new HttpHeaders();
       h.setLocation(su.getUri());
       return new ResponseEntity<>(su, h, HttpStatus.CREATED);
-    } else {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+
   }
 
   /**
