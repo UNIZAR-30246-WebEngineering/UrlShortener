@@ -1,10 +1,8 @@
 package urlshortener.web;
 
 import java.net.URI;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpHeaders;
@@ -15,10 +13,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import urlshortener.domain.ShortURL;
 import urlshortener.domain.User;
-import urlshortener.service.ClickService;
-import urlshortener.service.ShortURLService;
-import urlshortener.service.URLValidatorService;
-import urlshortener.service.UserService;
+import urlshortener.service.*;
 
 @RestController
 public class UrlShortenerController implements WebMvcConfigurer {
@@ -29,11 +24,21 @@ public class UrlShortenerController implements WebMvcConfigurer {
   private final ShortURLService shortUrlService;
   private final ClickService clickService;
   private final UserService userService;
-
-  public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService, UserService userService) {
+  private final TaskQueueService taskQueueService;
+  public UrlShortenerController(ShortURLService shortUrlService, ClickService clickService, UserService userService, TaskQueueService taskQueueService) {
     this.shortUrlService = shortUrlService;
     this.clickService = clickService;
     this.userService = userService;
+    this.taskQueueService = taskQueueService;
+  }
+
+  @RequestMapping(value = "/test", method = RequestMethod.POST)
+  public ResponseEntity<?> test() {
+    taskQueueService.send("one");
+    taskQueueService.send("two");
+    taskQueueService.send("tree");
+    taskQueueService.send("caramba");
+    return null;
   }
 
   @Override
@@ -158,10 +163,13 @@ public class UrlShortenerController implements WebMvcConfigurer {
                                             HttpServletRequest request) {
 
     URLValidatorService urlValidator = new URLValidatorService(url);
-    if(!userService.exists(userId)){
+    /* if(!userService.exists(userId)){
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
-    /*TODO INSERT CODE TO QUEQE THE VALIDATION TASKS
+    }*/
+    TaskQueueService tqs = null;
+
+    /*TODO INSERT CODE TO QUEUE THE VALIDATION TASKS
+
       if (urlValidator.isValid()) {
       } else {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
