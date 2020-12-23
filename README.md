@@ -63,3 +63,20 @@ $ curl -v http://localhost:8080/6bb9db44
 < Content-Length: 0
 <
 ```
+
+# Teams
+
+|Team|URL|
+|:-:|---|
+| A | <https://github.com/rauljavierre/yap>
+| B | <https://github.com/PCR-TERUEL/UrlShortener>
+| C | <https://github.com/URLY-WebEngineering/UrlShortener>
+| D | <https://github.com/saul205/UrlShortener> 
+| E | <https://github.com/740491/UrlShortener>
+| F | <https://github.com/Fran-sw/UrlShortener>
+| G | <https://github.com/DaniBarcelo/UrlShortener>
+| H | <https://github.com/piter1902/UrlShortener>
+| I | <https://github.com/david-AT/UrlShortener>
+| J | <https://github.com/SanTa45zgz/UrlShortener>
+| K | <https://github.com/andrewknoll/UrlShortener>
+
