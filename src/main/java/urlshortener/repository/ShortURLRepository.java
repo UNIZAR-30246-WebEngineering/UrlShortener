@@ -17,8 +17,11 @@ public interface ShortURLRepository {
 
   void delete(String id);
 
+  boolean isExpired(String id);
+
   Long count();
 
   List<ShortURL> list(Long limit, Long offset);
 
+  List<ShortURL> findByUser(String userId);
 }

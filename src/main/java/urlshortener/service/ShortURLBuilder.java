@@ -6,7 +6,7 @@ import static com.google.common.hash.Hashing.murmur3_32;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
-import java.util.UUID;
+import java.util.Calendar;
 import java.util.function.Function;
 import org.springframework.http.HttpStatus;
 import urlshortener.domain.ShortURL;
@@ -18,7 +18,8 @@ public class ShortURLBuilder {
   private URI uri;
   private String sponsor;
   private Date created;
-  private String owner;
+  private Date expiration;
+  private Long owner;
   private Integer mode;
   private Boolean safe;
   private String ip;
@@ -35,6 +36,7 @@ public class ShortURLBuilder {
         uri,
         sponsor,
         created,
+        expiration,
         owner,
         mode,
         safe,
@@ -57,11 +59,14 @@ public class ShortURLBuilder {
 
   ShortURLBuilder createdNow() {
     this.created = new Date(System.currentTimeMillis());
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.MONTH, 1);
+    this.expiration = new Date(calendar.getTimeInMillis());
     return this;
   }
 
-  ShortURLBuilder randomOwner() {
-    this.owner = UUID.randomUUID().toString();
+  ShortURLBuilder owner(String owner) {
+    this.owner = Long.parseLong(owner);
     return this;
   }
 

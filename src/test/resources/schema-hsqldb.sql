@@ -2,6 +2,7 @@
 
 DROP TABLE CLICK IF EXISTS;
 DROP TABLE SHORTURL IF EXISTS;
+DROP TABLE USER IF EXISTS;
 
 -- ShortURL
 
@@ -11,7 +12,8 @@ CREATE TABLE SHORTURL
     TARGET  VARCHAR(1024),           -- Original URL
     SPONSOR VARCHAR(1024),           -- Sponsor URL
     CREATED TIMESTAMP,               -- Creation date
-    OWNER   VARCHAR(255),            -- User id
+    EXPIRATION DATE,                 -- Expiration date
+    OWNER   BIGINT,           -- User id
     MODE    INTEGER,                 -- Redirect mode
     SAFE    BOOLEAN,                 -- Safe target
     IP      VARCHAR(20),             -- IP
@@ -30,4 +32,15 @@ CREATE TABLE CLICK
     PLATFORM VARCHAR(50),                                                 -- Platform
     IP       VARCHAR(20),                                                 -- IP
     COUNTRY  VARCHAR(50)                                                  -- Country
-)
+);
+
+-- USER
+
+CREATE TABLE USER
+(
+    ID       BIGINT IDENTITY PRIMARY KEY,                                 -- KEY
+    USERNAME VARCHAR(15) UNIQUE,                                          -- Username
+    PASSWORD VARCHAR(50)                                                  -- Password
+);
+
+ALTER TABLE SHORTURL ADD FOREIGN KEY (OWNER) REFERENCES USER (ID);
